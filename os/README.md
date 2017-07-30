@@ -161,78 +161,105 @@ chmod file.txt: No such file or directory
 _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/MZYLHyuaJH)_
 
 Χρήσιμο: _[Unix Permissions Calculator](http://permissions-calculator.org/)_
+
+* **func Chown** (το όνομα προέρχεται από το **Ch**ange **own**er)
 ```golang
 func Chown(name string, uid, gid int) error
 ```
+* **func Chtimes** (το όνομα προέρχεται από το **Ch**ange **times**)
 ```golang
 func Chtimes(name string, atime time.Time, mtime time.Time) error func Clearenv()
 ```
+* **func Environ** (το όνομα προέρχεται από το **Environ**ment)
+
 ```golang
 func Environ() []string
 ```
+* **func Executable**
 ```golang
 func Executable() (string, error)
 ```
+* **func Exit**
 ```golang
 func Exit(code int)
 ```
+* **func Expand**
 ```golang
 func Expand(s string, mapping func(string) string) string
 ```
+* **func ExpandEnv** (το όνομα προέρχεται από το **Expand** **Env**ironment)
 ```golang
 func ExpandEnv(s string) string
 ```
+* **func Gategid** (το όνομα προέρχεται από το **Get** **e**ffective **g**roup **id**)
 ```golang
 func Getegid() int
 ```
+* **func Getenv** (το όνομα προέρχεται από το **Get** **Env**ironment)
 ```golang
 func Getenv(key string) string
 ```
+* **func Geteuid** (το όνομα προέρχεται από το **Get** **u**ser **id**)
 ```golang
 func Geteuid() int
 ```
+* **func Getgid** (το όνομα προέρχεται από το **Get** **g**roup **id**)
 ```golang
 func Getgid() int
 ```
+* **func Getgroups**
 ```golang
 func Getgroups() ([]int, error)
 ```
+* **func Getpagesize**
 ```golang
 func Getpagesize() int
 ```
+* **func Getpid** (το όνομα προέρχεται από το **Get** **p**rocess **id**)
 ```golang
 func Getpid() int
 ```
+* **func Getppid** (το όνομα προέρχεται από το **Get** **p**arent **p**rocess **id**)
 ```golang
 func Getppid() int
 ```
+* **func Getuid** (το όνομα προέρχεται από το **Get** **u**ser **id**)
 ```golang
 func Getuid() int
 ```
+* **func Getwd** (το όνομα προέρχεται από το **Get** **w**orking **d**irectory)
 ```golang
 func Getwd() (dir string, err error)
 ```
+* **func Hostname** 
 ```golang
 func Hostname() (name string, err error)
 ```
+* **func IsExist** 
 ```golang
 func IsExist(err error) bool
 ```
+* **func IsNotExist** 
  ```golang
 func IsNotExist(err error) bool
 ```
+* **func IsPathSeparator** 
 ```golang
 func IsPathSeparator(c uint8) bool
 ```
+* **func IsPermission** 
 ```golang
 func IsPermission(err error) bool
 ```
+* **func Lchown** (το όνομα προέρχεται από το symbolic **L**ink **c**hange **own**er)
 ```golang
 func Lchown(name string, uid, gid int) error
 ```
+* **func Link**
 ```golang
 func Link(oldname, newname string) error
 ```
+* **func LookupEnv** (το όνομα προέρχεται από το **Lookup** **Env**ironment)
 ```golang
 func LookupEnv(key string) (string, bool)
 ```
