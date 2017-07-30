@@ -102,12 +102,12 @@ import "os"
 var Args []string
 ```
 ### Οι διαθέσιμες συναρτήσεις
-***func Chdir*** (Το όνομα προέρχεται από το **Ch**ange working **Dir**ectory)
+* **func Chdir** (το όνομα προέρχεται από το **Ch**ange working **dir**ectory)
 
 ```golang
 func Chdir(dir string) error
 ```
-H Chdir αλλάζει τον τωρινό κατάλογο εργασίας με αυτόν που κατονομάζεται. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+H Chdir αλλάζει τον τωρινό κατάλογο εργασίας με αυτόν που δίνεται. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
 Παράδειγμα:
 ```golang
 package main
@@ -130,9 +130,37 @@ func main() {
 }
 ```
 _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/0rJjmTgkK6)_
+
+* **func Chmod** (το όνομα προέρχεται από το **Ch**ange **mod**e)
 ```golang
 func Chmod(name string, mode FileMode) error
 ```
+Η Chmod αλλάζει τον τρόπο λειτουργιας του δοθέντος αρχείου σύμφωνα με τον τρόπο που δίνεται. Εάν το αρχείο είναι ένας συμβολικός σύνδεσμος, αλλάζει τον τρόπο λειτουργίας του συνδεδεμένου στόχου. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	err := os.Chmod("file.txt", 0777) // Άλλαξε τον τρόπο λειτουργίας του file.txt σε 0777
+	if err != nil {
+		fmt.Println(err) // Επιστρέφει err αν δεν υπάρχει το αρχείο ή δεν μπορεί να αλλάξει τρόπο λειτουργας
+	}
+}
+
+```
+Output:
+```bash
+chmod file.txt: No such file or directory
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/MZYLHyuaJH)_
+
+Χρήσιμο: _[Unix Permissions Calculator](http://permissions-calculator.org/)_
 ```golang
 func Chown(name string, uid, gid int) error
 ```
