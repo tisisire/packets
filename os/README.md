@@ -53,7 +53,7 @@ import "os"
 ```
 Αναζήτηση από ποιές τιμές.
 
-```Ξεπερασμένο: Χρησιμοποίησε io.SeekStart, io.SeekCurrent, and io.SeekEnd.```
+```Ξεπερασμένο: Χρησιμοποίησε io.SeekStart, io.SeekCurrent, και io.SeekEnd.```
 
 ```golang
    const (
@@ -69,16 +69,38 @@ import "os"
             PathListSeparator = ':' // συγκεκριμένος διαχωριστής λίστας διαδρομης ανάλογα με το OS
 )
  ```
- ```       DevNull είναι το όνομα της “μηδενικής συσκευής” σε ένα λειτουργικό σύστημα. 
+ ```       
+ DevNull είναι το όνομα της “μηδενικής συσκευής” σε ένα λειτουργικό σύστημα. 
  Στα συστήματα τύπου Unix, είναι "/dev/null"; στα Windows, "NUL".
  ```
  ```golang
     const DevNull = "/dev/null"
 ```
 ### <a name="variables"></a>Μεταβλητές
+Ευέλικτα ανάλογα, συνηθισμένων σφαλμάτων κλήσης συστήματος.
+ ```golang
+   var (
+            ErrInvalid    = errors.New("invalid argument") // οι μέθοδοι του File θα επιστρέψουν αυτό το σφάλμα όταν ο δέκτης είναι nil
+            ErrPermission = errors.New("permission denied")
+            ErrExist = errors.New("file already exists")
+            ErrNotExist = errors.New("file does not exist")
+            ErrClosed = errors.New("file already closed")
+)
+```
+Τα Stdin, Stdout, and Stderr  είναι ανοικτά αρχεία που δείχνουν στους περιγραφείς αρχείων της τυπικής εξόδου, τυπικής εισόδου και τυπικού σφάλματος.
 
-
-
+Σημειώστε ότι κατά το χρόνο εκτέλεσης η Go γράφει στο standard error τυχόν panics και κρασσαρίσματα: Το κλείσιμο του Stderr μπορεί να οδηγήσει αυτά τα μηνύματα να πάνε κάπου αλλού, όπως, ίσως σε ένα αρχείο που θα ανοιχτεί αργότερα.
+ ```golang
+   var (
+           Stdin  = NewFile(uintptr(syscall.Stdin), "/dev/stdin")
+           Stdout = NewFile(uintptr(syscall.Stdout), "/dev/stdout")
+           Stderr = NewFile(uintptr(syscall.Stderr), "/dev/stderr")
+)
+```
+Η Args κρατάει τα ορίσματα της γραμμής εντολών, ξεκινώντας από το όνομα του προγράμματος.
+ ```golang
+var Args []string
+```
 ### Οι διαθέσιμες συναρτήσεις
 ```golang
 func Chdir(dir string) error
