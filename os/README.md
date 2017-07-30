@@ -102,9 +102,34 @@ import "os"
 var Args []string
 ```
 ### Οι διαθέσιμες συναρτήσεις
+***func Chdir*** (Το όνομα προέρχεται από το **Ch**ange working **Dir**ectory)
+
 ```golang
 func Chdir(dir string) error
 ```
+H Chdir αλλάζει τον τωρινό κατάλογο εργασίας με αυτόν που κατονομάζεται. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+Παράδειγμα:
+```golang
+package main
+
+import (
+  "fmt"
+  "os"
+)
+
+func main() {
+  s, _ := os.Getwd() // ζητάμε τον τωρινό κατάλογο εργασίας
+  fmt.Println(s) // εκτύπωσε τον
+
+  if err := os.Chdir("/tmp"); err != nil { // Εκτός και αν υπάρχει σφάλμα, άλλαξε κατάλογο και πήγαινε στον /tmp
+    panic(err) // αν υπάρχει σφάλμα τερμάτισε και δείξε μας το σφάλμα
+  }
+  s, _ = os.Getwd() // ζητάμε πάλι τον τωρινό κατάλογο εργασίας
+  fmt.Println(s) // εκτύπωσε τον (Τώρα είμαστε στον /tmp ή οποιοδήποτε symlink υπάρχει από το λειτουργικό σύστημα)
+
+}
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/0rJjmTgkK6)_
 ```golang
 func Chmod(name string, mode FileMode) error
 ```
@@ -233,7 +258,10 @@ func NewFile(fd uintptr, name string) *File
 func Open(name string) (*File, error)
 ```
 ```golang
-func OpenFile(name string, flag int, perm FileMode) (*File, error) func Pipe() (r *File, w *File, err error)
+func OpenFile(name string, flag int, perm FileMode) (*File, error) 
+```
+```golang
+func Pipe() (r *File, w *File, err error)
 ```
 ```golang
 func (f *File) Chdir() error
@@ -289,7 +317,10 @@ func (f *File) WriteString(s string) (n int, err error)
 
 ### type FileInfo
 ```golang
-func Lstat(name string) (FileInfo, error) func Stat(name string) (FileInfo, error)
+func Lstat(name string) (FileInfo, error)
+```
+```golang
+func Stat(name string) (FileInfo, error)
 ```
 ### type FileMode
 ```golang
@@ -360,8 +391,10 @@ func (p *ProcessState) SystemTime() time.Duration
 func (p *ProcessState) UserTime() time.Duration
 ```
 ### type Signal
-
-
+### type SyscallError
+```golang
+func (e *SyscallError) Error() string
+```
 
 
 
