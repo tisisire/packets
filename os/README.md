@@ -166,15 +166,75 @@ _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/MZYLHyua
 ```golang
 func Chown(name string, uid, gid int) error
 ```
+Η Chmod αλλάζει το αριθμητικό user id (uid) και το group id (gid) του δοθέντος αρχείου. Εάν το αρχείο είναι ένας συμβολικός σύνδεσμος, αλλάζει το αριθμητικό user id (uid) και το group id (gid) του συνδεδεμένου στόχου. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+
 * **func Chtimes** (το όνομα προέρχεται από το **Ch**ange **times**)
 ```golang
 func Chtimes(name string, atime time.Time, mtime time.Time) error func Clearenv()
 ```
+Η Chtimes αλλάζει την ημερομηνία προσπέλασης και τροποποίησης του δοθέντος αρχείου, με τρόπο παρόμοιο σας τις συναρτήσεις utime() και utimes() του Unix.
+Το υποκείμενο σύστημα αρχείων μπορεί να περικόψει ή να στρογγυλοποιήσει τις τιμές σε μιά λιγότερο ακριβής μονάδα.Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+
+
+Παράδειγμα:
+```golang
+package main
+
+//Κάνουμε import τα πακέτα log και time, μαζί με το os
+import (
+	"log"
+	"os"
+	"time"
+)
+
+func main() {
+	mtime := time.Date(2016, time.February, 1, 3, 4, 5, 0, time.UTC) // Θέτουμε ημερομηνία τροποποίησης
+	atime := time.Date(2017, time.March, 2, 4, 5, 6, 0, time.UTC) // θέτουμε ημερομηνία προσπέλασης
+	if err := os.Chtimes("file.txt", atime, mtime); err != nil {
+		log.Fatal(err) // εάν υπάρχει σφάλμα (όπως στην περίπτωσή μας) εκτύπωσέ το
+	}
+}
+
+
+```
+
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/cWt5dmfHyW)_
+* **func Clearenv** (το όνομα προέρχεται από το **Clear** **env**ironment)
+```golang
+func Clearenv()
+```
+Η Clearenv διαγράφει όλες τις μεταβλητές περιβάλλοντος.
 * **func Environ** (το όνομα προέρχεται από το **Environ**ment)
 
 ```golang
 func Environ() []string
 ```
+Η Environ επιστρέφει ένα αντίγραφο από συμβολοσειρές που αντιπροσωπεύουν το περιβάλλον, στην μορφή "κλειδί=τιμή".
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+	"strings"
+)
+
+func main() {
+	var env []string
+	env = os.Environ()
+
+	fmt.Println("Η λίστα με τις μεταβλητές περιβάλλοντος : \n")
+
+	for k, v := range env {
+		name := strings.Split(v, "=") // split by = sign
+
+		fmt.Printf("[%d] %s : %v\n", k, name[0], name[1])
+	}
+}
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/WOqgr4F1Kk)_
 * **func Executable**
 ```golang
 func Executable() (string, error)
