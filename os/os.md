@@ -495,31 +495,32 @@ func SameFile(fi1, fi2 FileInfo) bool
 ```golang
 func Setenv(key, value string) error
 ```
-Setenv sets the value of the environment variable named by the key. It returns an error, if any. 
+Η Setenv ενεργοποιεί τιμή στην μεταβλητή περιβάλλοντος που δίνεται με βάση το κλειδι. Επιστρέφει σφάλμα εάν υπάρχει κάποιο.
  
 * **func Symlink** (το όνομα προέρχεται από το **Sym**bolic **link**)
 ```golang
 func Symlink(oldname, newname string) error
 ```
-Symlink creates newname as a symbolic link to oldname. If there is an error, it will be of type *LinkError. 
+Η Symlink δημιουργεί το newname ως συμβολικό σύνδεσμο στο oldname. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *LinkError.  
 
 * **func TempDir** (το όνομα προέρχεται από το **Temp**orary **Dir**ectory)
 ```golang
 func TempDir() string
 ```
-TempDir returns the default directory to use for temporary files
+Η TempDir επιστρέφει τον προεπιλεγμένο για χρήση προσωρινών αρχείων, κατάλογο. 
 
 * **func Truncate**
 ```golang
 func Truncate(name string, size int64) error
 ```
-Truncate changes the size of the named file. If the file is a symbolic link, it changes the size of the link's target. If there is an error, it will be of type *PathError.
+Η Truncate αλλάζει το μέγεθος του δοθέντος αρχείου. Εάν το αρχείο είναι συμβολικός σύνδεσμος, αλλάζει το μέγεθος του στόχου του συνδέσμου. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
 
 * **func Unsetenv** (το όνομα προέρχεται από το **Unset** **env**ironment)
 ```golang
 func Unsetenv(key string) error
 ```
-Unsetenv unsets a single environment variable. 
+Η Unsetenv απενεργοποιεί μια μεταβλητή περιβάλλοντος.
+
 Παράδειγμα:
 ```golang
 package main
@@ -536,7 +537,8 @@ func main() {
 
 
 ### type File
-File represents an open file descriptor.
+Η File  αντιπροσωπεύει έναν ανοικτό περιγραφέα αρχείων.
+
 ```golang
 type File struct {
         // contains filtered or unexported fields
@@ -546,25 +548,25 @@ type File struct {
 ```golang
 func Create(name string) (*File, error)
 ```
-Create creates the named file with mode 0666 (before umask), truncating it if it already exists. If successful, methods on the returned File can be used for I/O; the associated file descriptor has mode O_RDWR. If there is an error, it will be of type *PathError. 
+Η Create δημιουργεί το δοθέντα αρχείο με λειτουργα 0666 (πριν το umask), περικόβοντας το αν υπάρχει ήση. Εάν πετύχει, οι μέθοδοι στο επιστρεφόμενο αρχείο μπορουν να χρησιμοποιηθούν για I/O; ο συνδεδεμένος περιγραφέας αρχείου έχει λειτουργία O_RDWR. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError. 
 
 * **func NewFile**
 ```golang
 func NewFile(fd uintptr, name string) *File
 ```
- NewFile returns a new File with the given file descriptor and name. 
- 
+Η NewFile επιστρέφει ένα καινούριο αρχείο με τον δοθέντα περιγραφέα αρχείου και όνομα. 
+
 * **func Open**
 ```golang
 func Open(name string) (*File, error)
 ```
-Open opens the named file for reading. If successful, methods on the returned file can be used for reading; the associated file descriptor has mode O_RDONLY. If there is an error, it will be of type *PathError.
+Η Open ανοίγει το δοθέντα αρχείο για ανάγνωση. Εάν είναι επιτυχές, οι μέθοδοι του επιστρεφόμενου αρχείο μπορουν να χρησιμοποιηθούν για ανάγνωση: ο συνδεδεμένος περιγραφέας αρχείου έχει λειτουργία O_RDONLY. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError. 
 
 * **func OpenFile**
 ```golang
 func OpenFile(name string, flag int, perm FileMode) (*File, error) 
 ```
-OpenFile is the generalized open call; most users will use Open or Create instead. It opens the named file with specified flag (O_RDONLY etc.) and perm, (0666 etc.) if applicable. If successful, methods on the returned File can be used for I/O. If there is an error, it will be of type *PathError. 
+Η OpenFile είναι μια γενικευμένη κλήση ανοίγματος: οι περισσότεροι χρστες χρησιμοποιούν, αντί αυτς την Open ή την Create. Ανοίγει το δοθέντα αρχείο, εάν είναι εφικτό, με συγκεκριμενη σημαία (O_RDONLY κτλ.) και δικαιώματα, (0666 etc.) άν πετύχει, οι μέθοδοι στο επιστρεφόμενο αρχείο μπορουν να χρησιμοποιηθούν για I/O. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.  
 
 Παράδειγμα:
 ```golang
@@ -591,13 +593,12 @@ func main() {
 func Pipe() (r *File, w *File, err error)
 ```
 
-Pipe returns a connected pair of Files; reads from r return bytes written to w. It returns the files and an error, if any. 
-
+Η Pipe επιστρέφει συνδεδεμένα ζεύγη από Files: διαβάζει από r επιστρέφει bytes γραμμένα στο w. Επιστρέφει τα αρχεία και σφάλμα, εάν υπάρχει.
 * **method Chdir**
 ```golang
 func (f *File) Chdir() error
 ```
-hdir changes the current working directory to the file, which must be a directory. If there is an error, it will be of type *PathError. 
+Η Chdir changes the current working directory to the file, which must be a directory. If there is an error, it will be of type *PathError. 
 
 * **method Chmod**
 ```golang
@@ -805,6 +806,7 @@ IsRegular reports whether m describes a regular file. That is, it tests that no 
 func (m FileMode) Perm() FileMode 
 ```
 Perm returns the Unix permission bits in m.
+
 * **method String**
 ```golang
 func (m FileMode) String() string
@@ -866,7 +868,8 @@ type ProcAttr struct {
 ```
 ### type Process
 
-Process stores the information about a process created by StartProcess.
+Η Process αποθηκεύει, για μια διαδικασία, πληροφορίες που δημιουργήθηκαν από την StartProcess.  
+
 ```golang
    type Process struct {
            Pid int
@@ -893,7 +896,7 @@ If there is an error, it will be of type *PathError.
 ```golang
 func (p *Process) Kill() error
 ```
-Kill causes the Process to exit immediately.
+Η Kill έχει ως αποτέλεσμα η διαδικασία να εξέλθει άμεσα.
 
 * **method Release**
 ```golang
@@ -916,7 +919,7 @@ Wait waits for the Process to exit, and then returns a ProcessState describing i
 
 ### type ProcessState
 
-ProcessState stores information about a process, as reported by Wait.
+Η ProcessState αποθηκεύει πληροφορίες για μιά διαδικασία, όπως αυτές αναφέρονται από την Wait.
 ```golang
    type ProcessState struct {
            // contains filtered or unexported fields
@@ -927,12 +930,12 @@ ProcessState stores information about a process, as reported by Wait.
 func (p *ProcessState) Exited() bool
 ```
 
-Exited reports whether the program has exited.
+Η Exited αναφέρει εάν ένα πρόγραμμα έχει εξέλθει.
 * **method Pid**
 ```golang
 func (p *ProcessState) Pid() int
 ```
-Pid returns the process id of the exited process.
+Η Pid επιστρέφει το process id της εξελθούσας διαδικασίας.
 * **method String**
 ```golang
 func (p *ProcessState) String() string
@@ -941,7 +944,8 @@ func (p *ProcessState) String() string
 ```golang
 func (p *ProcessState) Success() bool
 ```
-Success reports whether the program exited successfully, such as with exit status 0 on Unix.
+Η Success αναφέρει εάν ένα πρόγραμμα έχει εξέλθει με επιτυχα, όπως ο κωδικός εξόδου 0 στο Unix.
+
 * **method Sys**
 ```golang
 func (p *ProcessState) Sys() interface{}
@@ -961,7 +965,7 @@ SysUsage returns system­dependent resource usage information about the exited p
 ```golang
 func (p *ProcessState) SystemTime() time.Duration 
 ```
-SystemTime returns the system CPU time of the exited process and its children.
+Η SystemTime επιστρέφει τον χρόνο της CPU του συστήματος, της διαδικασίας που έχει εξέλθει και τον παιδιών της.
 
 * **method UserTime**
 ```golang
@@ -986,7 +990,8 @@ The only signal values guaranteed to be present on all systems are Interrupt (se
 )
 ```
 ### type SyscallError
-SyscallError records an error from a specific system call.
+
+Η SyscallError καταγράφει ένα σφάλμα από συγκεκριμένη κλήση συστήματος.
 ```golang
 type SyscallError struct {
 	Syscall string
