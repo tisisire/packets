@@ -239,90 +239,205 @@ _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/WOqgr4F1
 ```golang
 func Executable() (string, error)
 ```
+Η Executable επιστρέφει τη διαδρομή του αρχείου που ξεκίνησε την τρέχουσα διαδικασία. Δεν είναι εγγυημένο ότι η διαδρομή δείχνει το σωστό εκτελέσιμο. Εάν μια συμβολική σύνδεση (symlink) έχει χρησιμοποιηθεί για να ξεκινήσει η διαδικασία, το αποτέλεσμα, βασιζόμενο στο λειτουργικό σύστημα, μπορεί να είναι η συμβολική σύνδεση ή η διαδρομή που δείχνει σε αυτή. Εάν χρειαζόμαστε ένα σταθερο αποτέλεσαμ, η path/filepath.EvalSymlinks μπορεί να βοηθήσει.   
+Η Executable επιστρέφει μια απόλυτη διαδρομή εκτός και αν προκύψει σφάλμα. Η βασική χρήση του είναι να βρίσκει τους πόρους τους σχετικούς με το εκτελέσιμο. Η Executable δεν υποστηρίζεται σε nacl ή σε OpenBSD (εκτός και αν κάνουμε mount την procfs)
+
 * **func Exit**
 ```golang
 func Exit(code int)
 ```
+Η Exit προκαλεί τον τερματισμό της τρέχουσας διαδικασας με τον δοθέντα κωδικό κατάστασης. Κατά συνθήκη, ο κωδικός μηδέν υποδεικνύει επιτυχα, και οποιοσδήποτε άλλος, σφάλμα. Το πρόγραμμα τερματίζει αμέσως: Οι αναβαλλόμενες συναρτήσεις δεν τρέχουν.
+
 * **func Expand**
 ```golang
 func Expand(s string, mapping func(string) string) string
 ```
+Η Expand αντικαθιστά την ${var} ή την $var σε μία συμβολοσείρα,  βασιζόμενη στην δοθείσα λειτουργα αντιστοίχισης. Για παράδειγμα η os.ExpandEnv(s) είναι παρόμοια με την os.Expand(s, os.Getenv).
+
 * **func ExpandEnv** (το όνομα προέρχεται από το **Expand** **Env**ironment)
 ```golang
 func ExpandEnv(s string) string
 ```
+Η ExpandEnv αντικαθιστά την ${var} ή την $var σε μία συμβολοσειρά, βασιζόμενη στις τιμές των τρεχουσών μεταβλητών περιβάλλοντος. Αναφορές σε απροσδιόριστες μεταβλητές θα αντικατασταθούν από την κενή συμβολοσειρά. 
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println(os.ExpandEnv("$USER lives in ${HOME}."))
+}
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/CS_9cNTUDv)_
+
 * **func Gategid** (το όνομα προέρχεται από το **Get** **e**ffective **g**roup **id**)
 ```golang
 func Getegid() int
 ```
-* **func Getenv** (το όνομα προέρχεται από το **Get** **Env**ironment)
+Η Getegid  επιστέφει το αριθμητικό effective group id του καλούντος.
+
+* **func Getenv** (το όνομα προέρχεται από το **Get** **env**ironment)
 ```golang
 func Getenv(key string) string
 ```
-* **func Geteuid** (το όνομα προέρχεται από το **Get** **u**ser **id**)
+Η Getenv ανακτά την μεταβλητήτη περιβάλλοντος, σύμφωνα με το δοθέντα κλειδί. Επιστρέφει την τιμή της, η οποία θα είναι κενή εάν η μεταβλητή δεν είναι παρούσα.  the value of the environment variable named by the key. It returns the value, which will be empty if the variable is not present. Για την διάκριση ανάμεσα σε κενή τιμή και σε μία ανενεργή μεταβλητή, χρησιμοποίησε την LookupEnv.
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Printf("%s lives in %s.\n", os.Getenv("USER"), os.Getenv("HOME"))
+}
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/b48PSRsQcW)_
+
+* **func Geteuid** (το όνομα προέρχεται από το **Get** **e**ffective **u**ser **id**)
 ```golang
 func Geteuid() int
 ```
+Η Geteuid επιστρέφει το αριθμητικό effective user id του καλούντος.
+
 * **func Getgid** (το όνομα προέρχεται από το **Get** **g**roup **id**)
 ```golang
 func Getgid() int
 ```
+Η Getgid επιστρέφιε το group id του καλούντος.
+
 * **func Getgroups**
 ```golang
 func Getgroups() ([]int, error)
 ```
+Η Getgroups επιστρέφει μια λίστα από αριμητικά ids των groups που ανήκει ο καλούντας.
+
 * **func Getpagesize**
 ```golang
 func Getpagesize() int
 ```
+Η Getpagesize επιστρέφει το μέγεθος της σελίδας μνήμης του υποκείμενου συστήματος.
+
 * **func Getpid** (το όνομα προέρχεται από το **Get** **p**rocess **id**)
 ```golang
 func Getpid() int
 ```
+Η Getpid επιστρέφει το process id του καλούντος.
+
 * **func Getppid** (το όνομα προέρχεται από το **Get** **p**arent **p**rocess **id**)
 ```golang
 func Getppid() int
 ```
+Η Getppid επιστρέφει το process id της γονικής διαδικασίας του καλούντος.
+
 * **func Getuid** (το όνομα προέρχεται από το **Get** **u**ser **id**)
 ```golang
 func Getuid() int
 ```
+Η Getuid επιστρέφει το user id του καλούντος.
+
 * **func Getwd** (το όνομα προέρχεται από το **Get** **w**orking **d**irectory)
 ```golang
 func Getwd() (dir string, err error)
 ```
+Η Getwd επιστρέφει το όνομα της ριζικής διαδρομής που αντιστοιχεί στον τρέχον κατάλογο. Εάν ο τωρινός κατάλογος μπορεί να προσπελαστεί διαμέσου πολλαπλών διαδρομών (εξαιτίας συμβολικών συνδέσμων), η Getwd μπορεί να επιστρέψει οποιαδήποτε από αυτές.
+
 * **func Hostname** 
 ```golang
 func Hostname() (name string, err error)
 ```
+Η Hostname επιστρέφει το όνομα του συστήματος όπως αναφέρεται από τον πυρήνα.
 * **func IsExist** 
 ```golang
 func IsExist(err error) bool
 ```
+IsExist returns a boolean indicating whether the error is known to report that a file or directory already exists. It is satisfied by ErrExist as well as some syscall errors.
+
+
 * **func IsNotExist** 
  ```golang
 func IsNotExist(err error) bool
 ```
+
+IsNotExist returns a boolean indicating whether the error is known to report that a file or directory does not exist. It is satisfied by ErrNotExist as well as some syscall errors.
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	filename := "a-nonexistent-file"
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		fmt.Printf("file does not exist")
+	}
+}
+
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/DwKS5-aAid)_
+
 * **func IsPathSeparator** 
 ```golang
 func IsPathSeparator(c uint8) bool
 ```
+IsPathSeparator reports whether c is a directory separator character.
 * **func IsPermission** 
 ```golang
 func IsPermission(err error) bool
 ```
+IsPermission returns a boolean indicating whether the error is known to report that permission is denied. It is satisfied by ErrPermission as well as some syscall errors.
 * **func Lchown** (το όνομα προέρχεται από το symbolic **L**ink **c**hange **own**er)
 ```golang
 func Lchown(name string, uid, gid int) error
 ```
+Lchown changes the numeric uid and gid of the named file. If the file is a symbolic link, it changes the uid and gid of the link itself. If there is an error, it will be of type *PathError.
 * **func Link**
 ```golang
 func Link(oldname, newname string) error
 ```
+Link creates newname as a hard link to the oldname file. If there is an error, it will be of type *LinkError.
 * **func LookupEnv** (το όνομα προέρχεται από το **Lookup** **Env**ironment)
 ```golang
 func LookupEnv(key string) (string, bool)
 ```
+LookupEnv retrieves the value of the environment variable named by the key. If the variable is present in the environment the value (which may be empty) is returned and the boolean is true. Otherwise the returned value will be empty and the boolean will be false.
+
+Παράδειγμα:
+```golang
+package main
+
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	show := func(key string) {
+		val, ok := os.LookupEnv(key)
+		if !ok {
+			fmt.Printf("%s not set\n", key)
+		} else {
+			fmt.Printf("%s=%s\n", key, val)
+		}
+	}
+	show("USER")
+	show("GOPATH")
+}
+```
+_Δοκίμασε το στο [Go Playground](https://play.golang.org/p/50uEk6VPb7)_
+
 ```golang
 func Mkdir(name string, perm FileMode) error
 ```
