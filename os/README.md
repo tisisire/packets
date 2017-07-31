@@ -6,7 +6,7 @@ import "os"
 * [Γενικά](#info)
 * [Σταθερες](#const)
 * [Μεταβλητές](#variables)
-* [Συναρτήσεις](#funcs)
+* [Συναρτήσεις - Μέθοδοι](#funcs)
 
 
 ### <a name="info"></a>Γενικά
@@ -102,7 +102,7 @@ import "os"
  ```golang
 var Args []string
 ```
-### <a name="funcs"></a> Οι ενσωματωμένες συναρτήσεις
+### <a name="funcs"></a> Οι ενσωματωμένες Συναρτήσεις - Μέθοδοι
 * **func Chdir** (το όνομα προέρχεται από το **Ch**ange working **dir**ectory)
 
 ```golang
@@ -240,7 +240,7 @@ _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/WOqgr4F1
 ```golang
 func Executable() (string, error)
 ```
-Η Executable επιστρέφει τη διαδρομή του αρχείου που ξεκίνησε την τρέχουσα διαδικασία. Δεν είναι εγγυημένο ότι η διαδρομή δείχνει το σωστό εκτελέσιμο. Εάν μια συμβολική σύνδεση (symlink) έχει χρησιμοποιηθεί για να ξεκινήσει η διαδικασία, το αποτέλεσμα, βασιζόμενο στο λειτουργικό σύστημα, μπορεί να είναι η συμβολική σύνδεση ή η διαδρομή που δείχνει σε αυτή. Εάν χρειαζόμαστε ένα σταθερο αποτέλεσαμ, η path/filepath.EvalSymlinks μπορεί να βοηθήσει.   
+Η Executable επιστρέφει τη διαδρομή του αρχείου που ξεκίνησε την τρέχουσα διαδικασία. Δεν είναι εγγυημένο ότι η διαδρομή δείχνει το σωστό εκτελέσιμο. Εάν μια συμβολική σύνδεση (symlink) έχει χρησιμοποιηθεί για να ξεκινήσει η διαδικασία, το αποτέλεσμα, βασιζόμενο στο λειτουργικό σύστημα, μπορεί να είναι η συμβολική σύνδεση ή η διαδρομή που δείχνει σε αυτή. Εάν χρειαζόμαστε ένα σταθερο αποτέλεσμα, η path/filepath.EvalSymlinks μπορεί να βοηθήσει.   
 Η Executable επιστρέφει μια απόλυτη διαδρομή εκτός και αν προκύψει σφάλμα. Η βασική χρήση του είναι να βρίσκει τους πόρους τους σχετικούς με το εκτελέσιμο. Η Executable δεν υποστηρίζεται σε nacl ή σε OpenBSD (εκτός και αν κάνουμε mount την procfs)
 
 * **func Exit**
@@ -441,138 +441,188 @@ func main() {
 ```
 _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/50uEk6VPb7)_
 
+* **func Mkdir** (το όνομα προέρχεται από το **M**a**k**e **dir**ectory)
 ```golang
 func Mkdir(name string, perm FileMode) error
 ```
+
+* **func MkdirAll** (το όνομα προέρχεται από το **M**a**k**e **dir**ectory **All**)
 ```golang
 func MkdirAll(path string, perm FileMode) error 
 ```
+
+* **func NewSyscallError** 
 ```golang
 func NewSyscallError(syscall string, err error) error 
 ```
+
+* **func Readlink** 
 ```golang
 func Readlink(name string) (string, error)
 ```
+* **func Remove** 
 ```golang
 func Remove(name string) error
 ```
+* **func RemoveAll** 
 ```golang
 func RemoveAll(path string) error
 ```
+* **func Rename** 
 ```golang
 func Rename(oldpath, newpath string) error
 ```
+* **func SameFile** 
 ```golang
 func SameFile(fi1, fi2 FileInfo) bool
 ```
+* **func Setenv** (το όνομα προέρχεται από το  **Set** **env**ironment)
 ```golang
 func Setenv(key, value string) error
 ```
+* **func Symlink** (το όνομα προέρχεται από το **Sym**bolic **link**)
 ```golang
 func Symlink(oldname, newname string) error
 ```
+* **func TempDir** (το όνομα προέρχεται από το **Temp**orary **Dir**ectory)
 ```golang
 func TempDir() string
 ```
+* **func Truncate**
 ```golang
 func Truncate(name string, size int64) error
 ```
+* **func Unsetenv** (το όνομα προέρχεται από το **Unset** **env**ironment)
 ```golang
 func Unsetenv(key string) error
 ```
 ### type File
+
+* **func Create**
 ```golang
 func Create(name string) (*File, error)
 ```
+* **func NewFile**
 ```golang
 func NewFile(fd uintptr, name string) *File
 ```
+* **func Open**
 ```golang
 func Open(name string) (*File, error)
 ```
+* **func OpenFile**
 ```golang
 func OpenFile(name string, flag int, perm FileMode) (*File, error) 
 ```
+* **func Pipe**
 ```golang
 func Pipe() (r *File, w *File, err error)
 ```
+* **method Chdir**
 ```golang
 func (f *File) Chdir() error
 ```
+* **method Chmod**
 ```golang
 func (f *File) Chmod(mode FileMode) error
 ```
+* **method Chown**
 ```golang
 func (f *File) Chown(uid, gid int) error
 ```
+* **method Close**
 ```golang
 func (f *File) Close() error
 ```
+* **method Fd**
 ```golang
 func (f *File) Fd() uintptr
 ```
+* **method Name**
 ```golang
 func (f *File) Name() string
 ```
+* **method Read**
 ```golang
 func (f *File) Read(b []byte) (n int, err error)
 ```
+* **method ReadAt**
 ```golang
 func (f *File) ReadAt(b []byte, off int64) (n int, err error)
 ```
+* **method Readdir**
 ```golang
 func (f *File) Readdir(n int) ([]FileInfo, error)
 ```
+* **method Readdirnames**
 ```golang
 func (f *File) Readdirnames(n int) (names []string, err error)
 ```
+* **method Seek**
 ```golang
 func (f *File) Seek(offset int64, whence int) (ret int64, err error)
 ```
+* **method Stat**
 ```golang
 func (f *File) Stat() (FileInfo, error)
 ```
+* **method Sync**
 ```golang
 func (f *File) Sync() error
 ```
+* **method Truncate**
 ```golang
 func (f *File) Truncate(size int64) error
 ```
+* **method Write**
 ```golang
 func (f *File) Write(b []byte) (n int, err error)
 ```
+* **method WriteAt**
 ```golang
 func (f *File) WriteAt(b []byte, off int64) (n int, err error)
 ```
+* **method WriteString**
 ```golang
 func (f *File) WriteString(s string) (n int, err error)
 ```
 
 ### type FileInfo
+
+* **func Lstat**
 ```golang
 func Lstat(name string) (FileInfo, error)
 ```
+* **func Stat**
 ```golang
 func Stat(name string) (FileInfo, error)
 ```
 ### type FileMode
+
+* **method IsDir**
 ```golang
 func (m FileMode) IsDir() bool
 ```
+* **method IsRegular**
 ```golang
 func (m FileMode) IsRegular() bool 
 ```
+* **method Perm**
 ```golang
 func (m FileMode) Perm() FileMode 
 ```
+* **method String**
 ```golang
 func (m FileMode) String() string
 ```
 ### type LinkError
+
+* **method Error**
 ```golang
 func (e *LinkError) Error() string
 ```
 ### type PathError
+* **method Error**
 ```golang
 func (e *PathError) Error() string
 ```
@@ -580,51 +630,68 @@ func (e *PathError) Error() string
 
 ### type Process
 
+* **func FindProcess**
 ```golang
 func FindProcess(pid int) (*Process, error)
 ```
+* **func StartProcess**
 ```golang
 func StartProcess(name string, argv []string, attr *ProcAttr) (*Process, error) 
 ```
+* **method Kill**
 ```golang
 func (p *Process) Kill() error
 ```
+* **method Release**
 ```golang
 func (p *Process) Release() error
 ```
+* **method Signal**
 ```golang
 func (p *Process) Signal(sig Signal) error
 ```
+* **method Wait**
 ```golang
 func (p *Process) Wait() (*ProcessState, error)
 ```
 ### type ProcessState
+
+* **method Exited**
 ```golang
 func (p *ProcessState) Exited() bool
 ```
+* **method Pid**
 ```golang
 func (p *ProcessState) Pid() int
 ```
+* **method String**
 ```golang
 func (p *ProcessState) String() string
 ```
+* **method Success**
 ```golang
 func (p *ProcessState) Success() bool
 ```
+* **method Sys**
 ```golang
 func (p *ProcessState) Sys() interface{}
 ```
+* **method SysUsage**
 ```golang
 func (p *ProcessState) SysUsage() interface{}
 ```
+* **method SystemTime**
 ```golang
 func (p *ProcessState) SystemTime() time.Duration 
 ```
+* **method UserTime**
 ```golang
 func (p *ProcessState) UserTime() time.Duration
 ```
 ### type Signal
 ### type SyscallError
+
+* **method Error**
 ```golang
 func (e *SyscallError) Error() string
 ```
