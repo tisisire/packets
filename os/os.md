@@ -286,7 +286,7 @@ func Getegid() int
 ```golang
 func Getenv(key string) string
 ```
-Η Getenv ανακτά την μεταβλητήτη περιβάλλοντος, σύμφωνα με το δοθέντα κλειδί. Επιστρέφει την τιμή της, η οποία θα είναι κενή εάν η μεταβλητή δεν είναι παρούσα.  the value of the environment variable named by the key. It returns the value, which will be empty if the variable is not present. Για την διάκριση ανάμεσα σε κενή τιμή και σε μία ανενεργή μεταβλητή, χρησιμοποίησε την LookupEnv.
+Η Getenv ανακτά την μεταβλητήτη περιβάλλοντος, σύμφωνα με το δοθέντα κλειδί. Επιστρέφει την τιμή της, η οποία θα είναι κενή εάν η μεταβλητή δεν είναι παρούσα. Για την διάκριση ανάμεσα σε κενή τιμή και σε μία ανενεργή μεταβλητή, χρησιμοποίησε την LookupEnv.
 
 Παράδειγμα:
 ```golang
@@ -415,7 +415,7 @@ func Link(oldname, newname string) error
 ```golang
 func LookupEnv(key string) (string, bool)
 ```
-LookupEnv retrieves the value of the environment variable named by the key. If the variable is present in the environment the value (which may be empty) is returned and the boolean is true. Otherwise the returned value will be empty and the boolean will be false.
+H LookupEnv ανακτά την μεταβλητήτη περιβάλλοντος, σύμφωνα με το δοθέντα κλειδί. Εάν η μεταβλητή είναι παρούσα στο περιβάλλον, επιστρέφεται η τιμή της (η οποία μπορεί να είναι κενή), και το boolean επιστρέφει true. Αλλιώς η επιστρεφόμενη τιμη θα είναι κενή και το boolean false. 
 
 Παράδειγμα:
 ```golang
@@ -445,51 +445,51 @@ _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/50uEk6VP
 ```golang
 func Mkdir(name string, perm FileMode) error
 ```
-Mkdir creates a new directory with the specified name and permission bits. If there is an error, it will be of type *PathError. 
+Η Mkdir δημιουργεί έναν κατάλογο με συγκεκριμένο όνομα και bits δικαιωμάτων. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
 
 * **func MkdirAll** (το όνομα προέρχεται από το **M**a**k**e **dir**ectory **All**)
 ```golang
 func MkdirAll(path string, perm FileMode) error 
 ```
-MkdirAll creates a directory named path, along with any necessary parents, and returns nil, or else returns an error. The permission bits perm are used for all directories that MkdirAll creates. If path is already a directory, MkdirAll does nothing and returns nil. 
+Η MkdirAll δημιουργεί μια διαδρομή καταλόγου, μαζί με τις όποιες απαραίτητες γονικές και επιστέφει nil ή αλλιώς επιστρέφει κάποιο σφάλμα. Τα bits δικαιωμάτων, perm, χρησιμοποιούνται σε όλους τους καταλόλους τους οποίους δημιουργεί η MkdirAll. Εάν η διαδρομή υπάρχει ήδη, η MkdirAll δεν κάνει κάτι και επιστρέφει nil. 
 
 * **func NewSyscallError** 
 ```golang
 func NewSyscallError(syscall string, err error) error 
 ```
 
-NewSyscallError returns, as an error, a new SyscallError with the given system call name and error details. As a convenience, if err is nil, NewSyscallError returns nil. 
+Η NewSyscallError επιστρέφει, ως σφάλμα, ένα νέο SyscallError με το δοθέντα όνομα κλήσης συστήματος και τις λεπτομέρειες του σφάλματος. Για ευκολία, εάν το σφάλμα είναι nil, επιστρέφει nil. 
 
 * **func Readlink** 
 ```golang
 func Readlink(name string) (string, error)
 ```
-Readlink returns the destination of the named symbolic link. If there is an error, it will be of type *PathError. 
+Η Readlink επιστρέφει τον προορισμό του δοθέντα συμβολικού συνδέσμου. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
  
 * **func Remove** 
 ```golang
 func Remove(name string) error
 ```
 
-Remove removes the named file or directory. If there is an error, it will be of type *PathError. 
- 
+Η Remove αφαιρεί το δοθέντα αρχείο ή κατάλογο. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+
 * **func RemoveAll** 
 ```golang
 func RemoveAll(path string) error
 ```
-RemoveAll removes path and any children it contains. It removes everything it can but returns the first error it encounters. If the path does not exist, RemoveAll returns nil (no error). 
- 
+Η RemoveAll αφαιρεί την διαδρομή και κάθε παιδί που περιέχει. Αφαιρεί τα πάντα, αλλά επιστρέφει το πρώτο σφάλμα που συνάντησε. Εάν η διαδρομή δεν υπάρχει επιστρέφει nil. 
+
 * **func Rename** 
 ```golang
 func Rename(oldpath, newpath string) error
 ```
-Rename renames (moves) oldpath to newpath. If newpath already exists and is not a directory, Rename replaces it. OS-specific restrictions may apply when oldpath and newpath are in different directories. If there is an error, it will be of type *LinkError. 
+Η Rename μετονομάζει(μετακινεί) το oldpath σε newpath. Εάν το newpath υπάρχει ήδη και δεν είναι κατάλογος, η Rename το αντικαθιστά. Μπορούν να ισχύσουν περιορισμοί (εξαρτάται από το OS) έαν το oldpath και το newpath είναι σε διαφορετικούς καταλόγους. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *LinkError. 
 
 * **func SameFile** 
 ```golang
 func SameFile(fi1, fi2 FileInfo) bool
 ```
-SameFile reports whether fi1 and fi2 describe the same file. For example, on Unix this means that the device and inode fields of the two underlying structures are identical; on other systems the decision may be based on the path names. SameFile only applies to results returned by this package's Stat. It returns false in other cases.
+Η SameFile αναφέρει εάν τα fi1 και fi2 περιγράφουν το ίδιο αρχείο. Για παράδειγμα, στο Unix, αυτό σημαίνει ότι η συσκευή και  τα πεδία των εσωτερικών κόμβων, δύο υποκείμενων δομών είναι ταυτόσημα: σε άλλα συστήματα η απόφαση μπορεί να βασίζεται στο όνομα της διαδρομής. Η SameFile έχει εφαρμογή μόνο, στα επιστρεφόμενα αποτελέσματα της Stat. Επιστρέφει false σε άλλες περιπτώσεις.
 
 * **func Setenv** (το όνομα προέρχεται από το  **Set** **env**ironment)
 ```golang
