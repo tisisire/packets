@@ -360,14 +360,14 @@ func Hostname() (name string, err error)
 ```golang
 func IsExist(err error) bool
 ```
-Η IsExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος υπάρχει ήδη, είναι γνωστό και μπορεί να αναφερθεί. Αυτό μπορεί να ικανοποιηθεί και από την ErrExist και από άλλα σφάλματα κλήσεων συστήματος. 
+Η IsExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος υπάρχει ήδη, είναι γνωστό και μπορεί να αναφερθεί. Αυτό ικανοποιείται από την ErrExist και από άλλα σφάλματα κλήσεων συστήματος. 
 
 * **func IsNotExist** 
  ```golang
 func IsNotExist(err error) bool
 ```
 
-Η IsNotExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος δεν υπάρχει, είναι γνωστό και μπορεί να αναφερθεί. Αυτό μπορεί να ικανοποιηθεί και από την ErrNotExist και από άλλα σφάλματα κλήσεων συστήματος. 
+Η IsNotExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος δεν υπάρχει, είναι γνωστό και μπορεί να αναφερθεί. υτό ικανοποιείται από την ErrNotExist και από άλλα σφάλματα κλήσεων συστήματος. 
 Παράδειγμα:
 ```golang
 package main
@@ -397,17 +397,20 @@ func IsPathSeparator(c uint8) bool
 ```golang
 func IsPermission(err error) bool
 ```
-IsPermission returns a boolean indicating whether the error is known to report that permission is denied. It is satisfied by ErrPermission as well as some syscall errors.
+Η IsPermission μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι η πρόσβαση δεν είναι επιτρεπτή είναι γνωστό και μπορεί να αναφερθεί. Αυτό ικανοποιείται από την ErrPermission και από άλλα σφάλματα κλήσεων συστήματος.  
+
 * **func Lchown** (το όνομα προέρχεται από το **L**ink **c**hange **own**er)
 ```golang
 func Lchown(name string, uid, gid int) error
 ```
-Lchown changes the numeric uid and gid of the named file. If the file is a symbolic link, it changes the uid and gid of the link itself. If there is an error, it will be of type *PathError.
+Η Lchown αλλάζει το αριθμητικό uid και gid του δοθέντος αρχείου. Εάν το αρχείο είναι ένας συμβολικός σύνδεσμος, αλλάζει το αριθμητικό uid και gid του συνδέσμου αυτού. Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *PathError.
+
 * **func Link**
 ```golang
 func Link(oldname, newname string) error
 ```
-Link creates newname as a hard link to the oldname file. If there is an error, it will be of type *LinkError.
+Η Link δημιουργεί ένα νεό όνομα (newname) ως μόνιμη σύνδεση στο προηγούμενο όνομα (oldname) του αρχείου.Εάν υπάρχει σφάλμα αυτό θα είναι τύπου *LinkError.
+
 * **func LookupEnv** (το όνομα προέρχεται από το **Lookup** **Env**ironment)
 ```golang
 func LookupEnv(key string) (string, bool)
