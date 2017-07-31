@@ -6,6 +6,7 @@ import "os"
 * [Γενικά](#info)
 * [Σταθερες](#const)
 * [Μεταβλητές](#variables)
+* [Συναρτήσεις](#funcs)
 
 
 ### <a name="info"></a>Γενικά
@@ -101,7 +102,7 @@ import "os"
  ```golang
 var Args []string
 ```
-### Οι διαθέσιμες συναρτήσεις
+### <a name="funcs"></a> Οι ενσωματωμένες συναρτήσεις
 * **func Chdir** (το όνομα προέρχεται από το **Ch**ange working **dir**ectory)
 
 ```golang
@@ -359,16 +360,14 @@ func Hostname() (name string, err error)
 ```golang
 func IsExist(err error) bool
 ```
-IsExist returns a boolean indicating whether the error is known to report that a file or directory already exists. It is satisfied by ErrExist as well as some syscall errors.
-
+Η IsExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος υπάρχει ήδη, είναι γνωστό και μπορεί να αναφερθεί. Αυτό μπορεί να ικανοποιηθεί και από την ErrExist και από άλλα σφάλματα κλήσεων συστήματος. 
 
 * **func IsNotExist** 
  ```golang
 func IsNotExist(err error) bool
 ```
 
-IsNotExist returns a boolean indicating whether the error is known to report that a file or directory does not exist. It is satisfied by ErrNotExist as well as some syscall errors.
-
+Η IsNotExist επιστρέφει μια boolean τιμή (true or false) που δηλώνει κατα πόσον το σφάλμα ότι το αρχείο ή ο κατάλογος δεν υπάρχει, είναι γνωστό και μπορεί να αναφερθεί. Αυτό μπορεί να ικανοποιηθεί και από την ErrNotExist και από άλλα σφάλματα κλήσεων συστήματος. 
 Παράδειγμα:
 ```golang
 package main
@@ -392,13 +391,14 @@ _Δοκίμασε το στο [Go Playground](https://play.golang.org/p/DwKS5-aA
 ```golang
 func IsPathSeparator(c uint8) bool
 ```
-IsPathSeparator reports whether c is a directory separator character.
+Η IsPathSeparator αναφέρει κατά πόσον ο χαρακτήρας c είναι διαχωριστικό καταλόγων.
+
 * **func IsPermission** 
 ```golang
 func IsPermission(err error) bool
 ```
 IsPermission returns a boolean indicating whether the error is known to report that permission is denied. It is satisfied by ErrPermission as well as some syscall errors.
-* **func Lchown** (το όνομα προέρχεται από το symbolic **L**ink **c**hange **own**er)
+* **func Lchown** (το όνομα προέρχεται από το **L**ink **c**hange **own**er)
 ```golang
 func Lchown(name string, uid, gid int) error
 ```
