@@ -23,7 +23,7 @@
 * http://www.gnu.org/software/tar/manual/html_node/Standard.html
 * http://pubs.opengroup.org/onlinepubs/9699919799/utilities/pax.html
 
-Παρδειγμα:
+Παράδειγμα:
 ```golang
 package main
 
@@ -92,22 +92,6 @@ func main() {
 
 }
 ```
-
-    Constants
-    Variables
-    type Header
-        func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)
-        func (h *Header) FileInfo() os.FileInfo
-    type Reader
-        func NewReader(r io.Reader) *Reader
-        func (tr *Reader) Next() (*Header, error)
-        func (tr *Reader) Read(b []byte) (int, error)
-    type Writer
-        func NewWriter(w io.Writer) *Writer
-        func (tw *Writer) Close() error
-        func (tw *Writer) Flush() error
-        func (tw *Writer) Write(b []byte) (n int, err error)
-        func (tw *Writer) WriteHeader(hdr *Header) error
 
 ### <a name="const"></a>Σταθερές (Constants)
 
