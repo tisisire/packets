@@ -17,7 +17,7 @@
 Δες: https://www.pkware.com/documents/casestudies/APPNOTE.TXT
 
 
-Το πακέτο δεν υποστηρίζει επέκταση δίσκου.
+Το πακέτο δεν υποστηρίζει επέκταση δίσκου.  
 Σημείωση σχετικά με το ZIP64:
 
 To be backwards compatible the FileHeader has both 32 and 64 bit Size fields. The 64 bit fields will always contain the correct value and for normal archives both fields will be the same. For files requiring the ZIP64 format the 32 bit fields will be 0xffffffff and the 64 bit fields must be used instead.
