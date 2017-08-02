@@ -84,7 +84,7 @@ type File struct {
 }
 ```
 
-* **func (*File) DataOffset**
+* **func (\*File) DataOffset**
 
 
 ```golang
@@ -95,7 +95,7 @@ DataOffset returns the offset of the file's possibly-compressed data, relative t
 
 Most callers should instead use Open, which transparently decompresses data and verifies checksums.
 
-* **func (*File) Open**
+* **func (\*File) Open**
 
 
 ```golang
@@ -143,7 +143,7 @@ func FileInfoHeader(fi os.FileInfo) (*FileHeader, error)
 
 FileInfoHeader creates a partially-populated FileHeader from an os.FileInfo. Because os.FileInfo's Name method returns only the base name of the file it describes, it may be necessary to modify the Name field of the returned header to provide the full path name of the file.
 
-* **func (*FileHeader) FileInfo**
+* **func (\*FileHeader) FileInfo**
 
 
 ```golang
@@ -153,7 +153,7 @@ func (h *FileHeader) FileInfo() os.FileInfo
 
 FileInfo returns an os.FileInfo for the FileHeader.
 
-* **func (*FileHeader) ModTime**
+* **func (\*FileHeader) ModTime**
 
 
 ```golang
@@ -163,7 +163,7 @@ func (h *FileHeader) ModTime() time.Time
 
 ModTime returns the modification time in UTC. The resolution is 2s.
 
-* **func (*FileHeader) Mode**
+* **func (\*FileHeader) Mode**
 
 
 ```golang
@@ -172,7 +172,7 @@ func (h *FileHeader) Mode() (mode os.FileMode)
 
 Mode returns the permission and mode bits for the FileHeader.
 
-* **func (*FileHeader) SetModTime**
+* **func (\*FileHeader) SetModTime**
 
 
 ```golang
@@ -181,7 +181,7 @@ func (h *FileHeader) SetModTime(t time.Time)
 
 SetModTime sets the ModifiedTime and ModifiedDate fields to the given time in UTC. The resolution is 2s.
 
-* **func (*FileHeader) SetMode**
+* **func (\*FileHeader) SetMode**
 
 ```golang
 func (h *FileHeader) SetMode(mode os.FileMode)
@@ -204,7 +204,7 @@ func OpenReader(name string) (*ReadCloser, error)
 
 OpenReader will open the Zip file specified by name and return a ReadCloser.
 
-* **func (*ReadCloser) Close**
+* **func (\*ReadCloser) Close**
 
 ```golang
 func (rc *ReadCloser) Close() error
@@ -232,7 +232,7 @@ func NewReader(r io.ReaderAt, size int64) (*Reader, error)
 
 NewReader returns a new Reader reading from r, which is assumed to have the given size in bytes.
 
-* **func (*Reader) RegisterDecompressor**
+* **func (\*Reader) RegisterDecompressor**
 
 ```golang
 func (z *Reader) RegisterDecompressor(method uint16, dcomp Decompressor)
@@ -259,7 +259,7 @@ func NewWriter(w io.Writer) *Writer
 
 NewWriter returns a new Writer writing a zip file to w.
 
-* **func (*Writer) Close**
+* **func (\*Writer) Close**
 
 ```golang
 func (w *Writer) Close() error
@@ -267,7 +267,7 @@ func (w *Writer) Close() error
 
 Close finishes writing the zip file by writing the central directory. It does not (and cannot) close the underlying writer.
 
-* **func (*Writer) Create**
+* **func (\*Writer) Create**
 
 ```golang
 func (w *Writer) Create(name string) (io.Writer, error)
@@ -275,7 +275,7 @@ func (w *Writer) Create(name string) (io.Writer, error)
 
 Create adds a file to the zip file using the provided name. It returns a Writer to which the file contents should be written. The name must be a relative path: it must not start with a drive letter (e.g. C:) or leading slash, and only forward slashes are allowed. The file's contents must be written to the io.Writer before the next call to Create, CreateHeader, or Close.
 
-* ** func (*Writer) CreateHeader **
+* ** func (\*Writer) CreateHeader **
 
 ```golang
 func (w *Writer) CreateHeader(fh *FileHeader) (io.Writer, error)
@@ -285,7 +285,7 @@ CreateHeader adds a file to the zip file using the provided FileHeader for the f
 
 The file's contents must be written to the io.Writer before the next call to Create, CreateHeader, or Close. The provided FileHeader fh must not be modified after a call to CreateHeader.
 
-* **func (*Writer) Flush**
+* **func (\*Writer) Flush**
 
 ```golang
 func (w *Writer) Flush() error
@@ -293,7 +293,7 @@ func (w *Writer) Flush() error
 
 Flush flushes any buffered data to the underlying writer. Calling Flush is not normally necessary; calling Close is sufficient.
 
-* **func (*Writer) RegisterCompressor**
+* **func (\*Writer) RegisterCompressor**
 
 ```golang
 func (w *Writer) RegisterCompressor(method uint16, comp Compressor)
@@ -304,7 +304,7 @@ RegisterCompressor registers or overrides a custom compressor for a specific met
 
 ▹ Example
 
-* **func (*Writer) SetOffset**
+* **func (\*Writer) SetOffset**
 
 ```golang
 func (w *Writer) SetOffset(n int64)
