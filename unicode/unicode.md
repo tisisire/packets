@@ -1,98 +1,56 @@
+ # Το πακέτο unicode
 
- Package unicode
+```golang
+ import "unicode"
+```
+Περιεχόμενα:
+* [Γενικά](#info)
+* [Σταθερες](#const)
+* [Μεταβλητές](#variables)
+* [Συναρτήσεις - Μέθοδοι](#funcs)
 
-    import "unicode"
-
-    Overview
-    Index
-    Examples
-    Subdirectories
-
-Overview ▾
+### <a name="info"></a>Γενικά 
 
 Package unicode provides data and functions to test some properties of Unicode code points.
 
-▹ Example (Is)
-Index ▾
-
-    Constants
-    Variables
-    func In(r rune, ranges ...*RangeTable) bool
-    func Is(rangeTab *RangeTable, r rune) bool
-    func IsControl(r rune) bool
-    func IsDigit(r rune) bool
-    func IsGraphic(r rune) bool
-    func IsLetter(r rune) bool
-    func IsLower(r rune) bool
-    func IsMark(r rune) bool
-    func IsNumber(r rune) bool
-    func IsOneOf(ranges []*RangeTable, r rune) bool
-    func IsPrint(r rune) bool
-    func IsPunct(r rune) bool
-    func IsSpace(r rune) bool
-    func IsSymbol(r rune) bool
-    func IsTitle(r rune) bool
-    func IsUpper(r rune) bool
-    func SimpleFold(r rune) rune
-    func To(_case int, r rune) rune
-    func ToLower(r rune) rune
-    func ToTitle(r rune) rune
-    func ToUpper(r rune) rune
-    type CaseRange
-    type Range16
-    type Range32
-    type RangeTable
-    type SpecialCase
-        func (special SpecialCase) ToLower(r rune) rune
-        func (special SpecialCase) ToTitle(r rune) rune
-        func (special SpecialCase) ToUpper(r rune) rune
-    Bugs
-
-Examples
-
-    SimpleFold
-    SpecialCase
-    To
-    ToLower
-    ToTitle
-    ToUpper
-    Package (Is)
-
-Package files
-
-casetables.go digit.go graphic.go letter.go tables.go
-Constants
-
+### <a name="const"></a>Σταθερές
+```golang
 const (
         MaxRune         = '\U0010FFFF' // Maximum valid Unicode code point.
         ReplacementChar = '\uFFFD'     // Represents invalid code points.
         MaxASCII        = '\u007F'     // maximum ASCII value.
         MaxLatin1       = '\u00FF'     // maximum Latin-1 value.
 )
-
+```
 Indices into the Delta arrays inside CaseRanges for case mapping.
 
+```golang
 const (
         UpperCase = iota
         LowerCase
         TitleCase
         MaxCase
 )
-
+````
 If the Delta field of a CaseRange is UpperLower, it means this CaseRange represents a sequence of the form (say) Upper Lower Upper Lower.
 
+```golang
 const (
         UpperLower = MaxRune + 1 // (Cannot be a valid delta.)
 )
+```
 
 Version is the Unicode edition from which the tables are derived.
 
+```golang
 const Version = "9.0.0"
+```
 
-Variables
+### <a name="variables"></a>Μεταβλητές  
 
 These variables have type *RangeTable.
 
+```golang
 var (
         Cc     = _Cc // Cc is the set of Unicode characters in category Cc.
         Cf     = _Cf // Cf is the set of Unicode characters in category Cf.
@@ -143,8 +101,11 @@ var (
         Zs     = _Zs // Zs is the set of Unicode characters in category Zs.
 )
 
+```
+
 These variables have type *RangeTable.
 
+```golang
 var (
         Adlam                  = _Adlam                  // Adlam is the set of Unicode characters in script Adlam.
         Ahom                   = _Ahom                   // Ahom is the set of Unicode characters in script Ahom.
@@ -285,8 +246,10 @@ var (
         Yi                     = _Yi                     // Yi is the set of Unicode characters in script Yi.
 )
 
+```
 These variables have type *RangeTable.
 
+```golang
 var (
         ASCII_Hex_Digit                    = _ASCII_Hex_Digit                    // ASCII_Hex_Digit is the set of Unicode characters with property ASCII_Hex_Digit.
         Bidi_Control                       = _Bidi_Control                       // Bidi_Control is the set of Unicode characters with property Bidi_Control.
@@ -323,13 +286,15 @@ var (
         Variation_Selector                 = _Variation_Selector                 // Variation_Selector is the set of Unicode characters with property Variation_Selector.
         White_Space                        = _White_Space                        // White_Space is the set of Unicode characters with property White_Space.
 )
-
+```
 CaseRanges is the table describing case mappings for all letters with non-self mappings.
 
+```golang
 var CaseRanges = _CaseRanges
-
+```
 Categories is the set of Unicode category tables.
 
+```golang
 var Categories = map[string]*RangeTable{
         "C":  C,
         "Cc": Cc,
@@ -368,9 +333,10 @@ var Categories = map[string]*RangeTable{
         "Zp": Zp,
         "Zs": Zs,
 }
-
+```
 FoldCategory maps a category name to a table of code points outside the category that are equivalent under simple case folding to code points inside the category. If there is no entry for a category name, there are no such points.
 
+```golang
 var FoldCategory = map[string]*RangeTable{
         "Common":    foldCommon,
         "Greek":     foldGreek,
@@ -382,25 +348,29 @@ var FoldCategory = map[string]*RangeTable{
         "M":         foldM,
         "Mn":        foldMn,
 }
-
+```
 FoldScript maps a script name to a table of code points outside the script that are equivalent under simple case folding to code points inside the script. If there is no entry for a script name, there are no such points.
 
+```golang
 var FoldScript = map[string]*RangeTable{}
-
+```
 GraphicRanges defines the set of graphic characters according to Unicode.
 
+```golang
 var GraphicRanges = []*RangeTable{
         L, M, N, P, S, Zs,
 }
-
+```
 PrintRanges defines the set of printable characters according to Go. ASCII space, U+0020, is handled separately.
 
+```golang
 var PrintRanges = []*RangeTable{
         L, M, N, P, S,
 }
-
+```
 Properties is the set of Unicode property tables.
 
+```golang
 var Properties = map[string]*RangeTable{
         "ASCII_Hex_Digit":                    ASCII_Hex_Digit,
         "Bidi_Control":                       Bidi_Control,
@@ -437,9 +407,9 @@ var Properties = map[string]*RangeTable{
         "Variation_Selector":                 Variation_Selector,
         "White_Space":                        White_Space,
 }
-
+```
 Scripts is the set of Unicode script tables.
-
+```golang
 var Scripts = map[string]*RangeTable{
         "Adlam":                  Adlam,
         "Ahom":                   Ahom,
@@ -579,99 +549,126 @@ var Scripts = map[string]*RangeTable{
         "Warang_Citi":            Warang_Citi,
         "Yi":                     Yi,
 }
+```
 
-func In
+* **func In**
 
+```golang
 func In(r rune, ranges ...*RangeTable) bool
-
+```
 In reports whether the rune is a member of one of the ranges.
-func Is
+* **func Is**
 
+```golang
 func Is(rangeTab *RangeTable, r rune) bool
-
+```
 Is reports whether the rune is in the specified table of ranges.
-func IsControl
 
+* **func IsControl**
+
+```golang
 func IsControl(r rune) bool
-
+```
 IsControl reports whether the rune is a control character. The C (Other) Unicode category includes more code points such as surrogates; use Is(C, r) to test for them.
-func IsDigit
 
+* **func IsDigit**
+
+```golang
 func IsDigit(r rune) bool
-
+```
 IsDigit reports whether the rune is a decimal digit.
-func IsGraphic
 
+* **func IsGraphic**
+
+```golang
 func IsGraphic(r rune) bool
-
+```
 IsGraphic reports whether the rune is defined as a Graphic by Unicode. Such characters include letters, marks, numbers, punctuation, symbols, and spaces, from categories L, M, N, P, S, Zs.
-func IsLetter
 
+* **func IsLetter**
+```golang
 func IsLetter(r rune) bool
-
+```
 IsLetter reports whether the rune is a letter (category L).
-func IsLower
 
+* **func IsLower**
+
+```golang
 func IsLower(r rune) bool
-
+```
 IsLower reports whether the rune is a lower case letter.
-func IsMark
 
+* **func IsMark**
+
+```golang
 func IsMark(r rune) bool
-
+```
 IsMark reports whether the rune is a mark character (category M).
-func IsNumber
 
+* **func IsNumber**
+```golang
 func IsNumber(r rune) bool
-
+```
 IsNumber reports whether the rune is a number (category N).
-func IsOneOf
 
+* **func IsOneOf**
+```golang
 func IsOneOf(ranges []*RangeTable, r rune) bool
-
+```
 IsOneOf reports whether the rune is a member of one of the ranges. The function "In" provides a nicer signature and should be used in preference to IsOneOf.
-func IsPrint
 
+* **func IsPrint**
+
+```golang
 func IsPrint(r rune) bool
-
+```
 IsPrint reports whether the rune is defined as printable by Go. Such characters include letters, marks, numbers, punctuation, symbols, and the ASCII space character, from categories L, M, N, P, S and the ASCII space character. This categorization is the same as IsGraphic except that the only spacing character is ASCII space, U+0020.
-func IsPunct
 
+* **func IsPunct**
+
+```golang
 func IsPunct(r rune) bool
-
+```
 IsPunct reports whether the rune is a Unicode punctuation character (category P).
-func IsSpace
+* **func IsSpace**
 
+```golang
 func IsSpace(r rune) bool
-
+```
 IsSpace reports whether the rune is a space character as defined by Unicode's White Space property; in the Latin-1 space this is
 
 '\t', '\n', '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP).
 
 Other definitions of spacing characters are set by category Z and property Pattern_White_Space.
-func IsSymbol
+* **func IsSymbol**
 
+```golang
 func IsSymbol(r rune) bool
-
+```
 IsSymbol reports whether the rune is a symbolic character.
-func IsTitle
+* **func IsTitle**
 
+```golang
 func IsTitle(r rune) bool
-
+```
 IsTitle reports whether the rune is a title case letter.
-func IsUpper
 
+* **func IsUpper**
+
+```golang
 func IsUpper(r rune) bool
+```
 
 IsUpper reports whether the rune is an upper case letter.
-func SimpleFold
 
+* **func SimpleFold**
+```golang
 func SimpleFold(r rune) rune
-
+```
 SimpleFold iterates over Unicode code points equivalent under the Unicode-defined simple case folding. Among the code points equivalent to rune (including rune itself), SimpleFold returns the smallest rune > r if one exists, or else the smallest rune >= 0. If r is not a valid Unicode code point, SimpleFold(r) returns r.
 
 For example:
-
+```golang
 SimpleFold('A') = 'a'
 SimpleFold('a') = 'A'
 
@@ -682,37 +679,40 @@ SimpleFold('\u212A') = 'K'
 SimpleFold('1') = '1'
 
 SimpleFold(-2) = -2
-
+```
 ▹ Example
-func To
+* **func To**
 
+```golang
 func To(_case int, r rune) rune
-
+```
 To maps the rune to the specified case: UpperCase, LowerCase, or TitleCase.
 
 ▹ Example
-func ToLower
+* **func ToLower**
 
+```golang
 func ToLower(r rune) rune
-
+```
 ToLower maps the rune to lower case.
 
 ▹ Example
-func ToTitle
+* **func ToTitle**
 
+```golang
 func ToTitle(r rune) rune
-
+```
 ToTitle maps the rune to title case.
 
 ▹ Example
-func ToUpper
-
+* **func ToUpper**
+```golang
 func ToUpper(r rune) rune
-
+```
 ToUpper maps the rune to upper case.
 
 ▹ Example
-type CaseRange
+### type CaseRange
 
 CaseRange represents a range of Unicode code points for simple (one code point to one code point) case conversion. The range runs from Lo to Hi inclusive, with a fixed stride of 1. Deltas are the number to add to the code point to reach the code point for a different case for that character. They may be negative. If zero, it means the character is in the corresponding case. There is a special case representing sequences of alternating corresponding Upper and Lower pairs. It appears with a fixed Delta of
 
@@ -720,70 +720,82 @@ CaseRange represents a range of Unicode code points for simple (one code point t
 
 The constant UpperLower has an otherwise impossible delta value.
 
+```golang
 type CaseRange struct {
         Lo    uint32
         Hi    uint32
         Delta d
 }
+```
 
-type Range16
+### type Range16
 
 Range16 represents of a range of 16-bit Unicode code points. The range runs from Lo to Hi inclusive and has the specified stride.
 
+```golang
 type Range16 struct {
         Lo     uint16
         Hi     uint16
         Stride uint16
 }
+```
 
-type Range32
+### type Range32
 
 Range32 represents of a range of Unicode code points and is used when one or more of the values will not fit in 16 bits. The range runs from Lo to Hi inclusive and has the specified stride. Lo and Hi must always be >= 1<<16.
 
+```golang
 type Range32 struct {
         Lo     uint32
         Hi     uint32
         Stride uint32
 }
+```
 
-type RangeTable
+### type RangeTable
 
 RangeTable defines a set of Unicode code points by listing the ranges of code points within the set. The ranges are listed in two slices to save space: a slice of 16-bit ranges and a slice of 32-bit ranges. The two slices must be in sorted order and non-overlapping. Also, R32 should contain only values >= 0x10000 (1<<16).
 
+```golang
 type RangeTable struct {
         R16         []Range16
         R32         []Range32
         LatinOffset int // number of entries in R16 with Hi <= MaxLatin1
 }
+```
 
-type SpecialCase
+### type SpecialCase
 
 SpecialCase represents language-specific case mappings such as Turkish. Methods of SpecialCase customize (by overriding) the standard mappings.
 
+```golang
 type SpecialCase []CaseRange
 
 var AzeriCase SpecialCase = _TurkishCase
 
 var TurkishCase SpecialCase = _TurkishCase
-
+```
 ▹ Example
-func (SpecialCase) ToLower
 
+### func (SpecialCase) ToLower
+```golang
 func (special SpecialCase) ToLower(r rune) rune
-
+```
 ToLower maps the rune to lower case giving priority to the special mapping.
-func (SpecialCase) ToTitle
 
+### func (SpecialCase) ToTitle
+```golang
 func (special SpecialCase) ToTitle(r rune) rune
-
+```
 ToTitle maps the rune to title case giving priority to the special mapping.
-func (SpecialCase) ToUpper
 
+### func (SpecialCase) ToUpper
+
+```golang
 func (special SpecialCase) ToUpper(r rune) rune
-
+```
 ToUpper maps the rune to upper case giving priority to the special mapping.
+```
 Bugs
-
-    ☞
-
     There is no mechanism for full case folding, that is, for characters that involve multiple runes in the input or output.
+```
