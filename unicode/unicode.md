@@ -777,19 +777,19 @@ var TurkishCase SpecialCase = _TurkishCase
 ```
 ▹ Example
 
-### func (SpecialCase) ToLower
+* **func (SpecialCase) ToLower**
 ```golang
 func (special SpecialCase) ToLower(r rune) rune
 ```
 ToLower maps the rune to lower case giving priority to the special mapping.
 
-### func (SpecialCase) ToTitle
+* **func (SpecialCase) ToTitle**
 ```golang
 func (special SpecialCase) ToTitle(r rune) rune
 ```
 ToTitle maps the rune to title case giving priority to the special mapping.
 
-### func (SpecialCase) ToUpper
+* **func (SpecialCase) ToUpper**
 
 ```golang
 func (special SpecialCase) ToUpper(r rune) rune
