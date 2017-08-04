@@ -163,7 +163,7 @@ func FileInfoHeader(fi os.FileInfo, link string) (*Header, error)
 
 FileInfoHeader creates a partially-populated Header from fi. If fi describes a symlink, FileInfoHeader records link as the link target. If fi describes a directory, a slash is appended to the name. Because os.FileInfo's Name method returns only the base name of the file it describes, it may be necessary to modify the Name field of the returned header to provide the full path name of the file.
 
-* **func (*Header) FileInfo**
+* **func (\*Header) FileInfo**
 
 ```golang
 func (h *Header) FileInfo() os.FileInfo
