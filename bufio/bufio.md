@@ -54,7 +54,7 @@ ErrFinalToken is a special sentinel error value. It is intended to be returned b
 ```golang
 var ErrFinalToken = errors.New("final token")
 ```
-
+### <a name="funcs"></a>Συναρτήσεις  
 * **func ScanBytes**
 
 ```golang
