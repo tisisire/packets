@@ -188,7 +188,7 @@ func NewReader(r io.Reader) *Reader
 
 NewReader creates a new Reader reading from r.
 
-* **func (*Reader) Next**
+* **func (\*Reader) Next**
 
 ```golang
 func (tr *Reader) Next() (*Header, error)
@@ -197,7 +197,7 @@ func (tr *Reader) Next() (*Header, error)
 Next advances to the next entry in the tar archive.
 
 io.EOF is returned at the end of the input.
-func (*Reader) Read
+* **func (\*Reader) Read**
 
 ```golang
 func (tr *Reader) Read(b []byte) (int, error)
@@ -222,9 +222,9 @@ type Writer struct {
 func NewWriter(w io.Writer) *Writer
 ```
 
-NewWriter creates a new Writer writing to w.
+Η NewWriter δημιουργεί έναν νέο Writer που γράφει στο w.
 
-* **func (*Writer) Close**
+* **func (\*Writer) Close**
 
 ```golang
 func (tw *Writer) Close() error
@@ -232,7 +232,7 @@ func (tw *Writer) Close() error
 
 Close closes the tar archive, flushing any unwritten data to the underlying writer.
 
-* **func (*Writer) Flush**
+* **func (\*Writer) Flush**
 
 ```golang
 func (tw *Writer) Flush() error
@@ -240,7 +240,7 @@ func (tw *Writer) Flush() error
 
 Flush finishes writing the current file (optional).
 
-* **func (*Writer) Write**
+* **func (\*Writer) Write**
 
 ```golang
 func (tw *Writer) Write(b []byte) (n int, err error)
@@ -248,7 +248,7 @@ func (tw *Writer) Write(b []byte) (n int, err error)
 
 Write writes to the current entry in the tar archive. Write returns the error ErrWriteTooLong if more than hdr.Size bytes are written after WriteHeader.
 
-* **func (*Writer) WriteHeader**
+* **func (\*Writer) WriteHeader**
 
 ```golang
 func (tw *Writer) WriteHeader(hdr *Header) error
