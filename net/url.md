@@ -13,7 +13,7 @@
 
 ### <a name="info"></a>Γενικά
 
-Το πακέτο url αναλύει τις URL και υλοποιεί query escaping.
+Το πακέτο url αναλύει τις URL και υλοποιεί την διαφυγή ερωτημάτων.
 
 ### <a name="funcs"></a>Συναρτήσεις - Μέθοδοι
 
@@ -23,22 +23,31 @@
 func PathEscape(s string) string
 ```
 
-PathEscape escapes the string so it can be safely placed inside a URL path segment.
-func PathUnescape
+Η PathEscape κάνει διαφυγή συμβολοσειρών, έτσι ώστε να μπορούν να τοποθετηθούν με ασφάλεια στο τμήμα διαδρομς της URL.
 
+* **func PathUnescape**
+
+```golang
 func PathUnescape(s string) (string, error)
+```
 
 PathUnescape does the inverse transformation of PathEscape, converting %AB into the byte 0xAB. It returns an error if any % is not followed by two hexadecimal digits.
 
 PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).
-func QueryEscape
 
+* **func QueryEscape**
+
+```golang
 func QueryEscape(s string) string
+```
 
 QueryEscape escapes the string so it can be safely placed inside a URL query.
-func QueryUnescape
 
+* **func QueryUnescape**
+
+```golang
 func QueryUnescape(s string) (string, error)
+```
 
 QueryUnescape does the inverse transformation of QueryEscape, converting %AB into the byte 0xAB and '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.
 type Error
