@@ -1,72 +1,27 @@
 
- Package url
+# Το πακέτο url
 
+```golang
     import "net/url"
+```
 
-    Overview
-    Index
-    Examples
+Περιεχόμενα:
+* [Γενικά](#info)
+* [Συναρτήσεις - Μέθοδοι](#funcs)
+* [Παραδείγματα](#examples)
 
-Overview ▾
 
-Package url parses URLs and implements query escaping.
-Index ▾
+### <a name="info"></a>Γενικά
 
-    func PathEscape(s string) string
-    func PathUnescape(s string) (string, error)
-    func QueryEscape(s string) string
-    func QueryUnescape(s string) (string, error)
-    type Error
-        func (e *Error) Error() string
-        func (e *Error) Temporary() bool
-        func (e *Error) Timeout() bool
-    type EscapeError
-        func (e EscapeError) Error() string
-    type InvalidHostError
-        func (e InvalidHostError) Error() string
-    type URL
-        func Parse(rawurl string) (*URL, error)
-        func ParseRequestURI(rawurl string) (*URL, error)
-        func (u *URL) EscapedPath() string
-        func (u *URL) Hostname() string
-        func (u *URL) IsAbs() bool
-        func (u *URL) MarshalBinary() (text []byte, err error)
-        func (u *URL) Parse(ref string) (*URL, error)
-        func (u *URL) Port() string
-        func (u *URL) Query() Values
-        func (u *URL) RequestURI() string
-        func (u *URL) ResolveReference(ref *URL) *URL
-        func (u *URL) String() string
-        func (u *URL) UnmarshalBinary(text []byte) error
-    type Userinfo
-        func User(username string) *Userinfo
-        func UserPassword(username, password string) *Userinfo
-        func (u *Userinfo) Password() (string, bool)
-        func (u *Userinfo) String() string
-        func (u *Userinfo) Username() string
-    type Values
-        func ParseQuery(query string) (Values, error)
-        func (v Values) Add(key, value string)
-        func (v Values) Del(key string)
-        func (v Values) Encode() string
-        func (v Values) Get(key string) string
-        func (v Values) Set(key, value string)
+Το πακέτο url αναλύει τις URL και υλοποιεί query escaping.
 
-Examples
+### <a name="funcs"></a>Συναρτήσεις - Μέθοδοι
 
-    ParseQuery
-    URL
-    URL.ResolveReference
-    URL (Opaque)
-    URL (Roundtrip)
-    Values
 
-Package files
-
-url.go
-func PathEscape
-
+* **func PathEscape**
+```golang
 func PathEscape(s string) string
+```
 
 PathEscape escapes the string so it can be safely placed inside a URL path segment.
 func PathUnescape
