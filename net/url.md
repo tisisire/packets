@@ -23,7 +23,7 @@
 func PathEscape(s string) string
 ```
 
-Η PathEscape κάνει διαφυγή συμβολοσειρών, έτσι ώστε να μπορούν να τοποθετηθούν με ασφάλεια στο τμήμα διαδρομς της URL.
+Η PathEscape κάνει διαφυγή συμβολοσειρών, έτσι ώστε να μπορούν να τοποθετηθούν με ασφάλεια στο τμήμα διαδρομής της URL.
 
 * **func PathUnescape**
 
@@ -31,9 +31,9 @@ func PathEscape(s string) string
 func PathUnescape(s string) (string, error)
 ```
 
-PathUnescape does the inverse transformation of PathEscape, converting %AB into the byte 0xAB. It returns an error if any % is not followed by two hexadecimal digits.
+Η PathUnescape κάνει τον αντίστροφο από την PathEscape μετασχηματισμό, μετατρέποντας το %AB στο byte 0xAB. Επιστρέφει σφάλμα εάν κάποιο από τα % δεν ακολουθείται από δύο δεκαεξαδικά ψηφία.
 
-PathUnescape is identical to QueryUnescape except that it does not unescape '+' to ' ' (space).
+Η PathUnescape είναι πανομοιότυπη με την QueryUnescape με την διαφορά ότι δεν κάνει unescape  το '+' σε ' ' (κενό).
 
 * **func QueryEscape**
 
@@ -41,7 +41,7 @@ PathUnescape is identical to QueryUnescape except that it does not unescape '+' 
 func QueryEscape(s string) string
 ```
 
-QueryEscape escapes the string so it can be safely placed inside a URL query.
+Η QueryEscape κάνει διαφυγή συμβλοσειράς, έτσι ώστε να μπορεί να τοποθετηθεί με ασφάλεια στην URL, εντός ερώτηματος.
 
 * **func QueryUnescape**
 
@@ -50,45 +50,59 @@ func QueryUnescape(s string) (string, error)
 ```
 
 QueryUnescape does the inverse transformation of QueryEscape, converting %AB into the byte 0xAB and '+' into ' ' (space). It returns an error if any % is not followed by two hexadecimal digits.
-type Error
+
+
+### type Error
 
 Error reports an error and the operation and URL that caused it.
-
+```golang
 type Error struct {
         Op  string
         URL string
         Err error
 }
+```
 
-func (*Error) Error
-
+* **func (\*Error) Error**
+```golang
 func (e *Error) Error() string
+```
+* **func (\*Error) Temporary**
 
-func (*Error) Temporary
-
+```golang
 func (e *Error) Temporary() bool
+```
 
-func (*Error) Timeout
+* **func (\*Error) Timeout**
 
+```golang
 func (e *Error) Timeout() bool
+```
 
-type EscapeError
-
+### type EscapeError
+```golang
 type EscapeError string
+```
 
-func (EscapeError) Error
+* **func (EscapeError) Error**
 
+```golang
 func (e EscapeError) Error() string
+```
 
-type InvalidHostError
+### type InvalidHostError
 
+```golang
 type InvalidHostError string
+```
 
-func (InvalidHostError) Error
+* **func (InvalidHostError) Error**
 
+```golang
 func (e InvalidHostError) Error() string
+```
 
-type URL
+### type URL
 
 A URL represents a parsed URL (technically, a URI reference). The general form represented is:
 
@@ -103,7 +117,7 @@ Note that the Path field is stored in decoded form: /%47%6f%2f becomes /Go/. A c
 Go 1.5 introduced the RawPath field to hold the encoded form of Path. The Parse function sets both Path and RawPath in the URL it returns, and URL's String method uses RawPath if it is a valid encoding of Path, by calling the EscapedPath method.
 
 In earlier versions of Go, the more indirect workarounds were that an HTTP server could consult req.RequestURI and an HTTP client could construct a URL struct directly and set the Opaque field instead of Path. These still work as well.
-
+```golang
 type URL struct {
         Scheme     string
         Opaque     string    // encoded opaque data
@@ -115,7 +129,7 @@ type URL struct {
         RawQuery   string // encoded query values, without '?'
         Fragment   string // fragment for references, without '#'
 }
-
+```
 ▹ Example
 
 ▹ Example (Opaque)
