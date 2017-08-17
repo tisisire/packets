@@ -15,11 +15,11 @@ The documentation here focuses on the security features of the package. For info
 Introduction
 
 This package wraps package text/template so you can share its template API to parse and execute HTML templates safely.
-
+```golang
 tmpl, err := template.New("name").Parse(...)
 // Error checking elided
 err = tmpl.Execute(out, data)
-
+```
 If successful, tmpl will now be injection-safe. Otherwise, err is an error defined in the docs for ErrorCode.
 
 HTML templates treat data values as plain text which should be encoded so they can be safely embedded in an HTML document. The escaping is contextual, so actions can appear within JavaScript, CSS, and URI contexts.
@@ -27,37 +27,37 @@ HTML templates treat data values as plain text which should be encoded so they c
 The security model used by this package assumes that template authors are trusted, while Execute's data parameter is not. More details are provided below.
 
 Example
-
+```golang
 import "text/template"
 ...
 t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
 err = t.ExecuteTemplate(out, "T", "<script>alert('you have been pwned')</script>")
-
+```
 produces
-
+```
 Hello, <script>alert('you have been pwned')</script>!
-
+```
 but the contextual autoescaping in html/template
-
+```golang
 import "html/template"
 ...
 t, err := template.New("foo").Parse(`{{define "T"}}Hello, {{.}}!{{end}}`)
 err = t.ExecuteTemplate(out, "T", "<script>alert('you have been pwned')</script>")
-
+```
 produces safe, escaped HTML output
-
+```
 Hello, &lt;script&gt;alert(&#39;you have been pwned&#39;)&lt;/script&gt;!
-
+```
 Contexts
 
 This package understands HTML, CSS, JavaScript, and URIs. It adds sanitizing functions to each simple action pipeline, so given the excerpt
-
+```html
 <a href="/search?q={{.}}">{{.}}</a>
-
+```
 At parse time each {{.}} is overwritten to add escaping functions as necessary. In this case it becomes
-
+```html
 <a href="/search?q={{. | urlquery}}">{{. | html}}</a>
-
+```
 Errors
 
 See the documentation of ErrorCode for details.
@@ -67,7 +67,7 @@ The rest of this package comment may be skipped on first reading; it includes de
 Contexts
 
 Assuming {{.}} is `O'Reilly: How are <i>you</i>?`, the table below shows how {{.}} appears when used in the context to the left.
-
+```
 Context                          {{.}} After
 {{.}}                            O'Reilly: How are &lt;i&gt;you&lt;/i&gt;?
 <a title='{{.}}'>                O&#39;Reilly: How are you?
@@ -76,16 +76,16 @@ Context                          {{.}} After
 <a onx='f("{{.}}")'>             O\x27Reilly: How are \x3ci\x3eyou...?
 <a onx='f({{.}})'>               "O\x27Reilly: How are \x3ci\x3eyou...?"
 <a onx='pattern = /{{.}}/;'>     O\x27Reilly: How are \x3ci\x3eyou...\x3f
-
+```
 If used in an unsafe context, then the value might be filtered out:
-
+```
 Context                          {{.}} After
 <a href="{{.}}">                 #ZgotmplZ
-
+```
 since "O'Reilly:" is not an allowed protocol like "http:".
 
 If {{.}} is the innocuous word, `left`, then it can appear more widely,
-
+```
 Context                              {{.}} After
 {{.}}                                left
 <a title='{{.}}'>                    left
@@ -97,19 +97,19 @@ Context                              {{.}} After
 <a style="background: '{{.}}'>       left
 <a style="background: url('{{.}}')>  left
 <style>p.{{.}} {color:red}</style>   left
-
+```
 Non-string values can be used in JavaScript contexts. If {{.}} is
-
+```golang
 struct{A,B string}{ "foo", "bar" }
-
+```
 in the escaped template
-
+```html
 <script>var pair = {{.}};</script>
-
+```
 then the template output is
-
+```
 <script>var pair = {"A": "foo", "B": "bar"};</script>
-
+```
 See package json to understand how non-string content is marshaled for embedding in JavaScript contexts.
 Typed Strings
 
