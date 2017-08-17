@@ -1,21 +1,26 @@
 
- Package net
+# Το πακέτο net
 
+```golang
     import "net"
+```
 
-    Overview
-    Index
-    Examples
-    Subdirectories
+Περιεχόμενα:
+* [Γενικά](#info)
+* [Σταθερές](#const)
+* [Μεταβλητές](#vars)
+* [Συναρτήσεις - Μέθοδοι](#funcs)
+* [Παραδείγματα](#examples)
 
-Overview ▾
+
+### <a name="info"></a>Γενικά
 
 Package net provides a portable interface for network I/O, including TCP/IP, UDP, domain name resolution, and Unix domain sockets.
 
 Although the package provides access to low-level networking primitives, most clients will need only the basic interface provided by the Dial, Listen, and Accept functions and the associated Conn and Listener interfaces. The crypto/tls package uses the same interfaces and similar Dial and Listen functions.
 
 The Dial function connects to a server:
-
+```golang
 conn, err := net.Dial("tcp", "golang.org:80")
 if err != nil {
 	// handle error
@@ -37,6 +42,7 @@ for {
 	}
 	go handleConnection(conn)
 }
+```
 
 Name Resolution
 
@@ -48,9 +54,10 @@ By default the pure Go resolver is used, because a blocked DNS request consumes 
 
 The resolver decision can be overridden by setting the netdns value of the GODEBUG environment variable (see package runtime) to go or cgo, as in:
 
+```golang
 export GODEBUG=netdns=go    # force pure Go resolver
 export GODEBUG=netdns=cgo   # force cgo resolver
-
+```
 The decision can also be forced while building the Go source tree by setting the netgo or netcgo build tag.
 
 A numeric netdns setting, as in GODEBUG=netdns=1, causes the resolver to print debugging information about its decisions. To force a particular resolver while also printing debugging information, join the two settings by a plus sign, as in GODEBUG=netdns=go+1.
@@ -58,267 +65,32 @@ A numeric netdns setting, as in GODEBUG=netdns=1, causes the resolver to print d
 On Plan 9, the resolver always accesses /net/cs and /net/dns.
 
 On Windows, the resolver always uses C library functions, such as GetAddrInfo and DnsQuery.
-Index ▾
 
-    Constants
-    Variables
-    func InterfaceAddrs() ([]Addr, error)
-    func Interfaces() ([]Interface, error)
-    func JoinHostPort(host, port string) string
-    func LookupAddr(addr string) (names []string, err error)
-    func LookupCNAME(host string) (cname string, err error)
-    func LookupHost(host string) (addrs []string, err error)
-    func LookupIP(host string) ([]IP, error)
-    func LookupMX(name string) ([]*MX, error)
-    func LookupNS(name string) ([]*NS, error)
-    func LookupPort(network, service string) (port int, err error)
-    func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
-    func LookupTXT(name string) ([]string, error)
-    func SplitHostPort(hostport string) (host, port string, err error)
-    type Addr
-    type AddrError
-        func (e *AddrError) Error() string
-        func (e *AddrError) Temporary() bool
-        func (e *AddrError) Timeout() bool
-    type Buffers
-        func (v *Buffers) Read(p []byte) (n int, err error)
-        func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
-    type Conn
-        func Dial(network, address string) (Conn, error)
-        func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
-        func FileConn(f *os.File) (c Conn, err error)
-        func Pipe() (Conn, Conn)
-    type DNSConfigError
-        func (e *DNSConfigError) Error() string
-        func (e *DNSConfigError) Temporary() bool
-        func (e *DNSConfigError) Timeout() bool
-    type DNSError
-        func (e *DNSError) Error() string
-        func (e *DNSError) Temporary() bool
-        func (e *DNSError) Timeout() bool
-    type Dialer
-        func (d *Dialer) Dial(network, address string) (Conn, error)
-        func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
-    type Error
-    type Flags
-        func (f Flags) String() string
-    type HardwareAddr
-        func ParseMAC(s string) (hw HardwareAddr, err error)
-        func (a HardwareAddr) String() string
-    type IP
-        func IPv4(a, b, c, d byte) IP
-        func ParseCIDR(s string) (IP, *IPNet, error)
-        func ParseIP(s string) IP
-        func (ip IP) DefaultMask() IPMask
-        func (ip IP) Equal(x IP) bool
-        func (ip IP) IsGlobalUnicast() bool
-        func (ip IP) IsInterfaceLocalMulticast() bool
-        func (ip IP) IsLinkLocalMulticast() bool
-        func (ip IP) IsLinkLocalUnicast() bool
-        func (ip IP) IsLoopback() bool
-        func (ip IP) IsMulticast() bool
-        func (ip IP) IsUnspecified() bool
-        func (ip IP) MarshalText() ([]byte, error)
-        func (ip IP) Mask(mask IPMask) IP
-        func (ip IP) String() string
-        func (ip IP) To16() IP
-        func (ip IP) To4() IP
-        func (ip *IP) UnmarshalText(text []byte) error
-    type IPAddr
-        func ResolveIPAddr(net, addr string) (*IPAddr, error)
-        func (a *IPAddr) Network() string
-        func (a *IPAddr) String() string
-    type IPConn
-        func DialIP(netProto string, laddr, raddr *IPAddr) (*IPConn, error)
-        func ListenIP(netProto string, laddr *IPAddr) (*IPConn, error)
-        func (c *IPConn) Close() error
-        func (c *IPConn) File() (f *os.File, err error)
-        func (c *IPConn) LocalAddr() Addr
-        func (c *IPConn) Read(b []byte) (int, error)
-        func (c *IPConn) ReadFrom(b []byte) (int, Addr, error)
-        func (c *IPConn) ReadFromIP(b []byte) (int, *IPAddr, error)
-        func (c *IPConn) ReadMsgIP(b, oob []byte) (n, oobn, flags int, addr *IPAddr, err error)
-        func (c *IPConn) RemoteAddr() Addr
-        func (c *IPConn) SetDeadline(t time.Time) error
-        func (c *IPConn) SetReadBuffer(bytes int) error
-        func (c *IPConn) SetReadDeadline(t time.Time) error
-        func (c *IPConn) SetWriteBuffer(bytes int) error
-        func (c *IPConn) SetWriteDeadline(t time.Time) error
-        func (c *IPConn) Write(b []byte) (int, error)
-        func (c *IPConn) WriteMsgIP(b, oob []byte, addr *IPAddr) (n, oobn int, err error)
-        func (c *IPConn) WriteTo(b []byte, addr Addr) (int, error)
-        func (c *IPConn) WriteToIP(b []byte, addr *IPAddr) (int, error)
-    type IPMask
-        func CIDRMask(ones, bits int) IPMask
-        func IPv4Mask(a, b, c, d byte) IPMask
-        func (m IPMask) Size() (ones, bits int)
-        func (m IPMask) String() string
-    type IPNet
-        func (n *IPNet) Contains(ip IP) bool
-        func (n *IPNet) Network() string
-        func (n *IPNet) String() string
-    type Interface
-        func InterfaceByIndex(index int) (*Interface, error)
-        func InterfaceByName(name string) (*Interface, error)
-        func (ifi *Interface) Addrs() ([]Addr, error)
-        func (ifi *Interface) MulticastAddrs() ([]Addr, error)
-    type InvalidAddrError
-        func (e InvalidAddrError) Error() string
-        func (e InvalidAddrError) Temporary() bool
-        func (e InvalidAddrError) Timeout() bool
-    type Listener
-        func FileListener(f *os.File) (ln Listener, err error)
-        func Listen(net, laddr string) (Listener, error)
-    type MX
-    type NS
-    type OpError
-        func (e *OpError) Error() string
-        func (e *OpError) Temporary() bool
-        func (e *OpError) Timeout() bool
-    type PacketConn
-        func FilePacketConn(f *os.File) (c PacketConn, err error)
-        func ListenPacket(net, laddr string) (PacketConn, error)
-    type ParseError
-        func (e *ParseError) Error() string
-    type Resolver
-        func (r *Resolver) LookupAddr(ctx context.Context, addr string) (names []string, err error)
-        func (r *Resolver) LookupCNAME(ctx context.Context, host string) (cname string, err error)
-        func (r *Resolver) LookupHost(ctx context.Context, host string) (addrs []string, err error)
-        func (r *Resolver) LookupIPAddr(ctx context.Context, host string) ([]IPAddr, error)
-        func (r *Resolver) LookupMX(ctx context.Context, name string) ([]*MX, error)
-        func (r *Resolver) LookupNS(ctx context.Context, name string) ([]*NS, error)
-        func (r *Resolver) LookupPort(ctx context.Context, network, service string) (port int, err error)
-        func (r *Resolver) LookupSRV(ctx context.Context, service, proto, name string) (cname string, addrs []*SRV, err error)
-        func (r *Resolver) LookupTXT(ctx context.Context, name string) ([]string, error)
-    type SRV
-    type TCPAddr
-        func ResolveTCPAddr(net, addr string) (*TCPAddr, error)
-        func (a *TCPAddr) Network() string
-        func (a *TCPAddr) String() string
-    type TCPConn
-        func DialTCP(net string, laddr, raddr *TCPAddr) (*TCPConn, error)
-        func (c *TCPConn) Close() error
-        func (c *TCPConn) CloseRead() error
-        func (c *TCPConn) CloseWrite() error
-        func (c *TCPConn) File() (f *os.File, err error)
-        func (c *TCPConn) LocalAddr() Addr
-        func (c *TCPConn) Read(b []byte) (int, error)
-        func (c *TCPConn) ReadFrom(r io.Reader) (int64, error)
-        func (c *TCPConn) RemoteAddr() Addr
-        func (c *TCPConn) SetDeadline(t time.Time) error
-        func (c *TCPConn) SetKeepAlive(keepalive bool) error
-        func (c *TCPConn) SetKeepAlivePeriod(d time.Duration) error
-        func (c *TCPConn) SetLinger(sec int) error
-        func (c *TCPConn) SetNoDelay(noDelay bool) error
-        func (c *TCPConn) SetReadBuffer(bytes int) error
-        func (c *TCPConn) SetReadDeadline(t time.Time) error
-        func (c *TCPConn) SetWriteBuffer(bytes int) error
-        func (c *TCPConn) SetWriteDeadline(t time.Time) error
-        func (c *TCPConn) Write(b []byte) (int, error)
-    type TCPListener
-        func ListenTCP(net string, laddr *TCPAddr) (*TCPListener, error)
-        func (l *TCPListener) Accept() (Conn, error)
-        func (l *TCPListener) AcceptTCP() (*TCPConn, error)
-        func (l *TCPListener) Addr() Addr
-        func (l *TCPListener) Close() error
-        func (l *TCPListener) File() (f *os.File, err error)
-        func (l *TCPListener) SetDeadline(t time.Time) error
-    type UDPAddr
-        func ResolveUDPAddr(net, addr string) (*UDPAddr, error)
-        func (a *UDPAddr) Network() string
-        func (a *UDPAddr) String() string
-    type UDPConn
-        func DialUDP(net string, laddr, raddr *UDPAddr) (*UDPConn, error)
-        func ListenMulticastUDP(network string, ifi *Interface, gaddr *UDPAddr) (*UDPConn, error)
-        func ListenUDP(net string, laddr *UDPAddr) (*UDPConn, error)
-        func (c *UDPConn) Close() error
-        func (c *UDPConn) File() (f *os.File, err error)
-        func (c *UDPConn) LocalAddr() Addr
-        func (c *UDPConn) Read(b []byte) (int, error)
-        func (c *UDPConn) ReadFrom(b []byte) (int, Addr, error)
-        func (c *UDPConn) ReadFromUDP(b []byte) (int, *UDPAddr, error)
-        func (c *UDPConn) ReadMsgUDP(b, oob []byte) (n, oobn, flags int, addr *UDPAddr, err error)
-        func (c *UDPConn) RemoteAddr() Addr
-        func (c *UDPConn) SetDeadline(t time.Time) error
-        func (c *UDPConn) SetReadBuffer(bytes int) error
-        func (c *UDPConn) SetReadDeadline(t time.Time) error
-        func (c *UDPConn) SetWriteBuffer(bytes int) error
-        func (c *UDPConn) SetWriteDeadline(t time.Time) error
-        func (c *UDPConn) Write(b []byte) (int, error)
-        func (c *UDPConn) WriteMsgUDP(b, oob []byte, addr *UDPAddr) (n, oobn int, err error)
-        func (c *UDPConn) WriteTo(b []byte, addr Addr) (int, error)
-        func (c *UDPConn) WriteToUDP(b []byte, addr *UDPAddr) (int, error)
-    type UnixAddr
-        func ResolveUnixAddr(net, addr string) (*UnixAddr, error)
-        func (a *UnixAddr) Network() string
-        func (a *UnixAddr) String() string
-    type UnixConn
-        func DialUnix(net string, laddr, raddr *UnixAddr) (*UnixConn, error)
-        func ListenUnixgram(net string, laddr *UnixAddr) (*UnixConn, error)
-        func (c *UnixConn) Close() error
-        func (c *UnixConn) CloseRead() error
-        func (c *UnixConn) CloseWrite() error
-        func (c *UnixConn) File() (f *os.File, err error)
-        func (c *UnixConn) LocalAddr() Addr
-        func (c *UnixConn) Read(b []byte) (int, error)
-        func (c *UnixConn) ReadFrom(b []byte) (int, Addr, error)
-        func (c *UnixConn) ReadFromUnix(b []byte) (int, *UnixAddr, error)
-        func (c *UnixConn) ReadMsgUnix(b, oob []byte) (n, oobn, flags int, addr *UnixAddr, err error)
-        func (c *UnixConn) RemoteAddr() Addr
-        func (c *UnixConn) SetDeadline(t time.Time) error
-        func (c *UnixConn) SetReadBuffer(bytes int) error
-        func (c *UnixConn) SetReadDeadline(t time.Time) error
-        func (c *UnixConn) SetWriteBuffer(bytes int) error
-        func (c *UnixConn) SetWriteDeadline(t time.Time) error
-        func (c *UnixConn) Write(b []byte) (int, error)
-        func (c *UnixConn) WriteMsgUnix(b, oob []byte, addr *UnixAddr) (n, oobn int, err error)
-        func (c *UnixConn) WriteTo(b []byte, addr Addr) (int, error)
-        func (c *UnixConn) WriteToUnix(b []byte, addr *UnixAddr) (int, error)
-    type UnixListener
-        func ListenUnix(net string, laddr *UnixAddr) (*UnixListener, error)
-        func (l *UnixListener) Accept() (Conn, error)
-        func (l *UnixListener) AcceptUnix() (*UnixConn, error)
-        func (l *UnixListener) Addr() Addr
-        func (l *UnixListener) Close() error
-        func (l *UnixListener) File() (f *os.File, err error)
-        func (l *UnixListener) SetDeadline(t time.Time) error
-        func (l *UnixListener) SetUnlinkOnClose(unlink bool)
-    type UnknownNetworkError
-        func (e UnknownNetworkError) Error() string
-        func (e UnknownNetworkError) Temporary() bool
-        func (e UnknownNetworkError) Timeout() bool
-    Bugs
-
-Examples
-
-    CIDRMask
-    Listener
-
-Package files
-
-addrselect.go cgo_linux.go cgo_resnew.go cgo_socknew.go cgo_unix.go conf.go dial.go dnsclient.go dnsclient_unix.go dnsconfig_unix.go dnsmsg.go fd_mutex.go fd_poll_runtime.go fd_posix.go fd_unix.go file.go file_unix.go hook.go hook_cloexec.go hook_unix.go hosts.go interface.go interface_linux.go ip.go iprawsock.go iprawsock_posix.go ipsock.go ipsock_posix.go lookup.go lookup_unix.go mac.go net.go nss.go parse.go pipe.go port.go port_unix.go sendfile_linux.go sock_cloexec.go sock_linux.go sock_posix.go sockopt_linux.go sockopt_posix.go sockoptip_linux.go sockoptip_posix.go tcpsock.go tcpsock_posix.go tcpsockopt_posix.go tcpsockopt_unix.go udpsock.go udpsock_posix.go unixsock.go unixsock_posix.go writev_unix.go
-Constants
+### <a name="const"></a>Σταθερές
 
 IP address lengths (bytes).
 
+```golang
 const (
         IPv4len = 4
         IPv6len = 16
 )
-
-Variables
+```
+### <a name="vars"></a>Μεταβλητές
 
 Well-known IPv4 addresses
 
+```golang
 var (
         IPv4bcast     = IPv4(255, 255, 255, 255) // limited broadcast
         IPv4allsys    = IPv4(224, 0, 0, 1)       // all systems
         IPv4allrouter = IPv4(224, 0, 0, 2)       // all routers
         IPv4zero      = IPv4(0, 0, 0, 0)         // all zeros
 )
-
+```
 Well-known IPv6 addresses
 
+```golang
 var (
         IPv6zero                   = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
         IPv6unspecified            = IP{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -327,142 +99,202 @@ var (
         IPv6linklocalallnodes      = IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x01}
         IPv6linklocalallrouters    = IP{0xff, 0x02, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x02}
 )
-
+```
 DefaultResolver is the resolver used by the package-level Lookup functions and by Dialers without a specified Resolver.
 
+```golang
 var DefaultResolver = &Resolver{}
+```
 
 Various errors contained in OpError.
 
+```golang
 var (
         ErrWriteToConnected = errors.New("use of WriteTo with pre-connected connection")
 )
+```
 
-func InterfaceAddrs
+### <a name="funcs"></a>Συναρτήσεις - Μέθοδοι
 
+* **func InterfaceAddrs**
+
+```golang
 func InterfaceAddrs() ([]Addr, error)
+```
 
 InterfaceAddrs returns a list of the system's unicast interface addresses.
 
 The returned list does not identify the associated interface; use Interfaces and Interface.Addrs for more detail.
-func Interfaces
 
+* **func Interfaces**
+
+```golang
 func Interfaces() ([]Interface, error)
-
+```
 Interfaces returns a list of the system's network interfaces.
-func JoinHostPort
 
+* **func JoinHostPort**
+
+```golang
 func JoinHostPort(host, port string) string
+```
 
 JoinHostPort combines host and port into a network address of the form "host:port" or, if host contains a colon or a percent sign, "[host]:port".
-func LookupAddr
 
+* **func LookupAddr**
+
+```golang
 func LookupAddr(addr string) (names []string, err error)
+```
 
 LookupAddr performs a reverse lookup for the given address, returning a list of names mapping to that address.
 
 When using the host C library resolver, at most one result will be returned. To bypass the host resolver, use a custom Resolver.
-func LookupCNAME
 
+* **func LookupCNAME**
+
+```golang
 func LookupCNAME(host string) (cname string, err error)
+```
 
 LookupCNAME returns the canonical name for the given host. Callers that do not care about the canonical name can call LookupHost or LookupIP directly; both take care of resolving the canonical name as part of the lookup.
 
 A canonical name is the final name after following zero or more CNAME records. LookupCNAME does not return an error if host does not contain DNS "CNAME" records, as long as host resolves to address records.
-func LookupHost
 
+* **func LookupHost**
+
+```golang
 func LookupHost(host string) (addrs []string, err error)
+```
 
 LookupHost looks up the given host using the local resolver. It returns a slice of that host's addresses.
-func LookupIP
 
+* **func LookupIP**
+
+```golang
 func LookupIP(host string) ([]IP, error)
+```
 
 LookupIP looks up host using the local resolver. It returns a slice of that host's IPv4 and IPv6 addresses.
-func LookupMX
 
+* **func LookupMX**
+
+```golang
 func LookupMX(name string) ([]*MX, error)
+```
 
 LookupMX returns the DNS MX records for the given domain name sorted by preference.
-func LookupNS
 
+* **func LookupNS**
+
+```golang
 func LookupNS(name string) ([]*NS, error)
+```
 
 LookupNS returns the DNS NS records for the given domain name.
-func LookupPort
 
+* **func LookupPort**
+
+```golang
 func LookupPort(network, service string) (port int, err error)
+```
 
 LookupPort looks up the port for the given network and service.
-func LookupSRV
 
+* **func LookupSRV**
+
+```golang
 func LookupSRV(service, proto, name string) (cname string, addrs []*SRV, err error)
+```
 
 LookupSRV tries to resolve an SRV query of the given service, protocol, and domain name. The proto is "tcp" or "udp". The returned records are sorted by priority and randomized by weight within a priority.
 
 LookupSRV constructs the DNS name to look up following RFC 2782. That is, it looks up _service._proto.name. To accommodate services publishing SRV records under non-standard names, if both service and proto are empty strings, LookupSRV looks up name directly.
-func LookupTXT
 
+* **func LookupTXT**
+
+```golang
 func LookupTXT(name string) ([]string, error)
+```
 
 LookupTXT returns the DNS TXT records for the given domain name.
-func SplitHostPort
 
+* **func SplitHostPort**
+
+```golang
 func SplitHostPort(hostport string) (host, port string, err error)
+```
 
 SplitHostPort splits a network address of the form "host:port", "[host]:port" or "[ipv6-host%zone]:port" into host or ipv6-host%zone and port. A literal address or host name for IPv6 must be enclosed in square brackets, as in "[::1]:80", "[ipv6-host]:http" or "[ipv6-host%zone]:80".
-type Addr
+
+### type Addr
 
 Addr represents a network end point address.
 
 The two methods Network and String conventionally return strings that can be passed as the arguments to Dial, but the exact form and meaning of the strings is up to the implementation.
 
+```golang
 type Addr interface {
         Network() string // name of the network (for example, "tcp", "udp")
         String() string  // string form of address (for example, "192.0.2.1:25", "[2001:db8::1]:80")
 }
+```
 
-type AddrError
+### type AddrError
 
+```golang
 type AddrError struct {
         Err  string
         Addr string
 }
+```
 
-func (*AddrError) Error
+* **func (\*AddrError) Error**
 
+```golang
 func (e *AddrError) Error() string
+```
 
-func (*AddrError) Temporary
+* **func (\*AddrError) Temporary**
 
+```golang
 func (e *AddrError) Temporary() bool
+```
 
-func (*AddrError) Timeout
+* **func (\*AddrError) Timeout**
 
+```golang
 func (e *AddrError) Timeout() bool
+```
 
-type Buffers
+### type Buffers
 
 Buffers contains zero or more runs of bytes to write.
 
 On certain machines, for certain types of connections, this is optimized into an OS-specific batch write operation (such as "writev").
-
+```golang
 type Buffers [][]byte
+```
 
-func (*Buffers) Read
+* **func (\*Buffers) Read**
 
+```golang
 func (v *Buffers) Read(p []byte) (n int, err error)
+```
 
-func (*Buffers) WriteTo
+* **func (\*Buffers) WriteTo**
 
+```golang
 func (v *Buffers) WriteTo(w io.Writer) (n int64, err error)
+```
 
-type Conn
+### type Conn
 
 Conn is a generic stream-oriented network connection.
 
 Multiple goroutines may invoke methods on a Conn simultaneously.
 
+```golang
 type Conn interface {
         // Read reads data from the connection.
         // Read can be made to time out and return an Error with Timeout() == true
@@ -513,10 +345,13 @@ type Conn interface {
         // A zero value for t means Write will not time out.
         SetWriteDeadline(t time.Time) error
 }
+```
 
-func Dial
+* **func Dial**
 
+```golang
 func Dial(network, address string) (Conn, error)
+```
 
 Dial connects to the address on the named network.
 
@@ -525,62 +360,75 @@ Known networks are "tcp", "tcp4" (IPv4-only), "tcp6" (IPv6-only), "udp", "udp4" 
 For TCP and UDP networks, addresses have the form host:port. If host is a literal IPv6 address it must be enclosed in square brackets as in "[::1]:80" or "[ipv6-host%zone]:80". The functions JoinHostPort and SplitHostPort manipulate addresses in this form. If the host is empty, as in ":80", the local system is assumed.
 
 Examples:
-
+```golang
 Dial("tcp", "192.0.2.1:80")
 Dial("tcp", "golang.org:http")
 Dial("tcp", "[2001:db8::1]:http")
 Dial("tcp", "[fe80::1%lo0]:80")
 Dial("tcp", ":80")
-
+```
 For IP networks, the network must be "ip", "ip4" or "ip6" followed by a colon and a protocol number or name and the addr must be a literal IP address.
 
 Examples:
-
+```golang
 Dial("ip4:1", "192.0.2.1")
 Dial("ip6:ipv6-icmp", "2001:db8::1")
-
+```
 For Unix networks, the address must be a file system path.
 
 If the host is resolved to multiple addresses, Dial will try each address in order until one succeeds.
-func DialTimeout
 
+* **func DialTimeout**
+```golang
 func DialTimeout(network, address string, timeout time.Duration) (Conn, error)
-
+```
 DialTimeout acts like Dial but takes a timeout. The timeout includes name resolution, if required.
-func FileConn
 
+* **func FileConn**
+
+```golang
 func FileConn(f *os.File) (c Conn, err error)
-
+```
 FileConn returns a copy of the network connection corresponding to the open file f. It is the caller's responsibility to close f when finished. Closing c does not affect f, and closing f does not affect c.
-func Pipe
 
+* **func Pipe**
+
+```golang
 func Pipe() (Conn, Conn)
-
+```
 Pipe creates a synchronous, in-memory, full duplex network connection; both ends implement the Conn interface. Reads on one end are matched with writes on the other, copying data directly between the two; there is no internal buffering.
 type DNSConfigError
 
 DNSConfigError represents an error reading the machine's DNS configuration. (No longer used; kept for compatibility.)
 
+```golang
 type DNSConfigError struct {
         Err error
 }
+```
 
-func (*DNSConfigError) Error
+* **func (\*DNSConfigError) Error**
 
+```golang
 func (e *DNSConfigError) Error() string
+```
 
-func (*DNSConfigError) Temporary
-
+* **func (\*DNSConfigError) Temporary**
+```golang
 func (e *DNSConfigError) Temporary() bool
+```
 
-func (*DNSConfigError) Timeout
+* **func (\*DNSConfigError) Timeout**
 
+```golang
 func (e *DNSConfigError) Timeout() bool
+```
 
-type DNSError
+### type DNSError
 
 DNSError represents a DNS lookup error.
 
+```golang
 type DNSError struct {
         Err         string // description of the error
         Name        string // name looked for
@@ -588,27 +436,33 @@ type DNSError struct {
         IsTimeout   bool   // if true, timed out; not all timeouts set this
         IsTemporary bool   // if true, error is temporary; not all errors set this
 }
-
-func (*DNSError) Error
-
+```
+* **func (\*DNSError) Error**
+```golang
 func (e *DNSError) Error() string
+```
 
-func (*DNSError) Temporary
+* **func (\*DNSError) Temporary**
 
+```golang
 func (e *DNSError) Temporary() bool
-
+```
 Temporary reports whether the DNS error is known to be temporary. This is not always known; a DNS lookup may fail due to a temporary error and return a DNSError for which Temporary returns false.
-func (*DNSError) Timeout
 
+* **func (\*DNSError) Timeout**
+
+```golang
 func (e *DNSError) Timeout() bool
-
+```
 Timeout reports whether the DNS lookup is known to have timed out. This is not always known; a DNS lookup may fail due to a timeout and return a DNSError for which Timeout returns false.
-type Dialer
+
+### type Dialer
 
 A Dialer contains options for connecting to an address.
 
 The zero value for each field is equivalent to dialing without that option. Dialing with the zero value of Dialer is therefore equivalent to just calling the Dial function.
 
+```golang
 type Dialer struct {
         // Timeout is the maximum amount of time a dial will wait for
         // a connect to complete. If Deadline is also set, it may fail
@@ -663,17 +517,22 @@ type Dialer struct {
         // Deprecated: Use DialContext instead.
         Cancel <-chan struct{}
 }
+```
 
-func (*Dialer) Dial
+* **func (\*Dialer) Dial**
 
+```golang
 func (d *Dialer) Dial(network, address string) (Conn, error)
+```
 
 Dial connects to the address on the named network.
 
 See func Dial for a description of the network and address parameters.
-func (*Dialer) DialContext
+* **func (\*Dialer) DialContext**
 
+```golang
 func (d *Dialer) DialContext(ctx context.Context, network, address string) (Conn, error)
+```
 
 DialContext connects to the address on the named network using the provided context.
 
@@ -682,18 +541,20 @@ The provided Context must be non-nil. If the context expires before the connecti
 When using TCP, and the host in the address parameter resolves to multiple network addresses, any dial timeout (from d.Timeout or ctx) is spread over each consecutive dial, such that each is given an appropriate fraction of the time to connect. For example, if a host has 4 IP addresses and the timeout is 1 minute, the connect to each single address will be given 15 seconds to complete before trying the next one.
 
 See func Dial for a description of the network and address parameters.
-type Error
+
+### type Error
 
 An Error represents a network error.
-
+```golang
 type Error interface {
         error
         Timeout() bool   // Is the error a timeout?
         Temporary() bool // Is the error temporary?
 }
+```
+### type Flags
 
-type Flags
-
+```golang
 type Flags uint
 
 const (
@@ -703,21 +564,26 @@ const (
         FlagPointToPoint                   // interface belongs to a point-to-point link
         FlagMulticast                      // interface supports multicast access capability
 )
+```
 
-func (Flags) String
+* **func (Flags) String**
 
+```golang
 func (f Flags) String() string
+```
 
-type HardwareAddr
+### type HardwareAddr
 
 A HardwareAddr represents a physical hardware address.
-
+```golang
 type HardwareAddr []byte
+```
 
-func ParseMAC
+* **func ParseMAC**
 
+```golang
 func ParseMAC(s string) (hw HardwareAddr, err error)
-
+```
 ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet IP over InfiniBand link-layer address using one of the following formats:
 
 01:23:45:67:89:ab
@@ -730,96 +596,121 @@ ParseMAC parses s as an IEEE 802 MAC-48, EUI-48, EUI-64, or a 20-octet IP over I
 0123.4567.89ab.cdef
 0123.4567.89ab.cdef.0000.0123.4567.89ab.cdef.0000
 
-func (HardwareAddr) String
+* **func (HardwareAddr) String**
 
+```golang
 func (a HardwareAddr) String() string
-
-type IP
+```
+### type IP
 
 An IP is a single IP address, a slice of bytes. Functions in this package accept either 4-byte (IPv4) or 16-byte (IPv6) slices as input.
 
 Note that in this documentation, referring to an IP address as an IPv4 address or an IPv6 address is a semantic property of the address, not just the length of the byte slice: a 16-byte slice can still be an IPv4 address.
-
+```golang
 type IP []byte
+```
 
-func IPv4
+* **func IPv4**
 
+```golang
 func IPv4(a, b, c, d byte) IP
+```
 
 IPv4 returns the IP address (in 16-byte form) of the IPv4 address a.b.c.d.
-func ParseCIDR
 
+* **func ParseCIDR**
+
+```golang
 func ParseCIDR(s string) (IP, *IPNet, error)
+```
 
 ParseCIDR parses s as a CIDR notation IP address and prefix length, like "192.0.2.0/24" or "2001:db8::/32", as defined in RFC 4632 and RFC 4291.
 
 It returns the IP address and the network implied by the IP and prefix length. For example, ParseCIDR("192.0.2.1/24") returns the IP address 198.0.2.1 and the network 198.0.2.0/24.
-func ParseIP
 
+* **func ParseIP**
+
+```golang
 func ParseIP(s string) IP
-
+```
 ParseIP parses s as an IP address, returning the result. The string s can be in dotted decimal ("192.0.2.1") or IPv6 ("2001:db8::68") form. If s is not a valid textual representation of an IP address, ParseIP returns nil.
-func (IP) DefaultMask
 
+* **func (IP) DefaultMask**
+```golang
 func (ip IP) DefaultMask() IPMask
-
+```
 DefaultMask returns the default IP mask for the IP address ip. Only IPv4 addresses have default masks; DefaultMask returns nil if ip is not a valid IPv4 address.
-func (IP) Equal
 
+* **func (IP) Equal**
+
+```golang
 func (ip IP) Equal(x IP) bool
-
+```
 Equal reports whether ip and x are the same IP address. An IPv4 address and that same address in IPv6 form are considered to be equal.
-func (IP) IsGlobalUnicast
 
+* **func (IP) IsGlobalUnicast**
+
+```golang
 func (ip IP) IsGlobalUnicast() bool
+```
 
 IsGlobalUnicast reports whether ip is a global unicast address.
 
 The identification of global unicast addresses uses address type identification as defined in RFC 1122, RFC 4632 and RFC 4291 with the exception of IPv4 directed broadcast addresses. It returns true even if ip is in IPv4 private address space or local IPv6 unicast address space.
-func (IP) IsInterfaceLocalMulticast
 
+* **func (IP) IsInterfaceLocalMulticast**
+
+```golang
 func (ip IP) IsInterfaceLocalMulticast() bool
+```
 
 IsInterfaceLocalMulticast reports whether ip is an interface-local multicast address.
-func (IP) IsLinkLocalMulticast
 
+* **func (IP) IsLinkLocalMulticast**
+
+```golang
 func (ip IP) IsLinkLocalMulticast() bool
-
+```
 IsLinkLocalMulticast reports whether ip is a link-local multicast address.
-func (IP) IsLinkLocalUnicast
 
+* **func (IP) IsLinkLocalUnicast**
+```golang
 func (ip IP) IsLinkLocalUnicast() bool
-
+```
 IsLinkLocalUnicast reports whether ip is a link-local unicast address.
-func (IP) IsLoopback
-
+* **func (IP) IsLoopback**
+```golang
 func (ip IP) IsLoopback() bool
+```
 
 IsLoopback reports whether ip is a loopback address.
-func (IP) IsMulticast
-
+* **func (IP) IsMulticast**
+```golang
 func (ip IP) IsMulticast() bool
-
+```
 IsMulticast reports whether ip is a multicast address.
-func (IP) IsUnspecified
+* **func (IP) IsUnspecified**
 
+```golang
 func (ip IP) IsUnspecified() bool
-
+```
 IsUnspecified reports whether ip is an unspecified address.
-func (IP) MarshalText
 
+* **func (IP) MarshalText**
+
+```golang
 func (ip IP) MarshalText() ([]byte, error)
-
+```
 MarshalText implements the encoding.TextMarshaler interface. The encoding is the same as returned by String.
-func (IP) Mask
-
+* **func (IP) Mask**
+```golang
 func (ip IP) Mask(mask IPMask) IP
-
+```
 Mask returns the result of masking the IP address ip with mask.
-func (IP) String
-
+* **func (IP) String**
+```golang
 func (ip IP) String() string
-
+```
 String returns the string form of the IP address ip. It returns one of 4 forms:
 
 - "<nil>", if ip has length 0
@@ -827,211 +718,262 @@ String returns the string form of the IP address ip. It returns one of 4 forms:
 - IPv6 ("2001:db8::1"), if ip is a valid IPv6 address
 - the hexadecimal form of ip, without punctuation, if no other cases apply
 
-func (IP) To16
-
+* **func (IP) To16**
+```golang
 func (ip IP) To16() IP
-
+```
 To16 converts the IP address ip to a 16-byte representation. If ip is not an IP address (it is the wrong length), To16 returns nil.
-func (IP) To4
 
+* **func (IP) To4**
+```golang
 func (ip IP) To4() IP
-
+```
 To4 converts the IPv4 address ip to a 4-byte representation. If ip is not an IPv4 address, To4 returns nil.
-func (*IP) UnmarshalText
 
+* **func (\*IP) UnmarshalText**
+```golang
 func (ip *IP) UnmarshalText(text []byte) error
-
+```
 UnmarshalText implements the encoding.TextUnmarshaler interface. The IP address is expected in a form accepted by ParseIP.
-type IPAddr
+
+### type IPAddr
 
 IPAddr represents the address of an IP end point.
-
+```golang
 type IPAddr struct {
         IP   IP
         Zone string // IPv6 scoped addressing zone
 }
+```
 
-func ResolveIPAddr
-
+* **func ResolveIPAddr**
+```golang
 func ResolveIPAddr(net, addr string) (*IPAddr, error)
-
+```
 ResolveIPAddr parses addr as an IP address of the form "host" or "ipv6-host%zone" and resolves the domain name on the network net, which must be "ip", "ip4" or "ip6".
 
 Resolving a hostname is not recommended because this returns at most one of its IP addresses.
-func (*IPAddr) Network
-
+* **func (\*IPAddr) Network**
+```golang
 func (a *IPAddr) Network() string
-
+```
 Network returns the address's network name, "ip".
-func (*IPAddr) String
+* **func (\*IPAddr) String**
 
+```golang
 func (a *IPAddr) String() string
-
-type IPConn
+```
+### type IPConn
 
 IPConn is the implementation of the Conn and PacketConn interfaces for IP network connections.
-
+```golang
 type IPConn struct {
         // contains filtered or unexported fields
 }
+```
+* **func DialIP**
 
-func DialIP
-
+```golang
 func DialIP(netProto string, laddr, raddr *IPAddr) (*IPConn, error)
+```
 
 DialIP connects to the remote address raddr on the network protocol netProto, which must be "ip", "ip4", or "ip6" followed by a colon and a protocol number or name.
-func ListenIP
 
+* **func ListenIP**
+
+```golang
 func ListenIP(netProto string, laddr *IPAddr) (*IPConn, error)
+```
 
 ListenIP listens for incoming IP packets addressed to the local address laddr. The returned connection's ReadFrom and WriteTo methods can be used to receive and send IP packets with per-packet addressing.
-func (*IPConn) Close
 
+* **func (\*IPConn) Close**
+
+```golang
 func (c *IPConn) Close() error
-
+```
 Close closes the connection.
-func (*IPConn) File
 
+* **func (\*IPConn) File**
+```golang
 func (c *IPConn) File() (f *os.File, err error)
-
+```
 File sets the underlying os.File to blocking mode and returns a copy. It is the caller's responsibility to close f when finished. Closing c does not affect f, and closing f does not affect c.
 
 The returned os.File's file descriptor is different from the connection's. Attempting to change properties of the original using this duplicate may or may not have the desired effect.
-func (*IPConn) LocalAddr
 
+* **func (\*IPConn) LocalAddr**
+
+```golang
 func (c *IPConn) LocalAddr() Addr
+```
 
 LocalAddr returns the local network address. The Addr returned is shared by all invocations of LocalAddr, so do not modify it.
-func (*IPConn) Read
 
+* **func (\*IPConn) Read**
+
+```golang
 func (c *IPConn) Read(b []byte) (int, error)
+```
 
 Read implements the Conn Read method.
-func (*IPConn) ReadFrom
 
+* **func (\*IPConn) ReadFrom**
+
+```golang
 func (c *IPConn) ReadFrom(b []byte) (int, Addr, error)
+```
 
 ReadFrom implements the PacketConn ReadFrom method.
-func (*IPConn) ReadFromIP
 
+* **func (\*IPConn) ReadFromIP**
+
+```golang
 func (c *IPConn) ReadFromIP(b []byte) (int, *IPAddr, error)
+```
 
 ReadFromIP reads an IP packet from c, copying the payload into b. It returns the number of bytes copied into b and the return address that was on the packet.
 
 ReadFromIP can be made to time out and return an error with Timeout() == true after a fixed time limit; see SetDeadline and SetReadDeadline.
-func (*IPConn) ReadMsgIP
 
+* **func (\*IPConn) ReadMsgIP**
+
+```golang
 func (c *IPConn) ReadMsgIP(b, oob []byte) (n, oobn, flags int, addr *IPAddr, err error)
-
+```
 ReadMsgIP reads a packet from c, copying the payload into b and the associated out-of-band data into oob. It returns the number of bytes copied into b, the number of bytes copied into oob, the flags that were set on the packet and the source address of the packet.
-func (*IPConn) RemoteAddr
 
+* **func (\*IPConn) RemoteAddr**
+
+```golang
 func (c *IPConn) RemoteAddr() Addr
-
+```
 RemoteAddr returns the remote network address. The Addr returned is shared by all invocations of RemoteAddr, so do not modify it.
-func (*IPConn) SetDeadline
 
+* **func (\*IPConn) SetDeadline**
+
+```golang
 func (c *IPConn) SetDeadline(t time.Time) error
-
+```
 SetDeadline implements the Conn SetDeadline method.
-func (*IPConn) SetReadBuffer
 
+* **func (\*IPConn) SetReadBuffer**
+```golang
 func (c *IPConn) SetReadBuffer(bytes int) error
-
+```
 SetReadBuffer sets the size of the operating system's receive buffer associated with the connection.
-func (*IPConn) SetReadDeadline
 
+* **func (\*IPConn) SetReadDeadline**
+```golang
 func (c *IPConn) SetReadDeadline(t time.Time) error
-
+```
 SetReadDeadline implements the Conn SetReadDeadline method.
-func (*IPConn) SetWriteBuffer
 
+* **func (\*IPConn) SetWriteBuffer**
+```golang
 func (c *IPConn) SetWriteBuffer(bytes int) error
-
+```
 SetWriteBuffer sets the size of the operating system's transmit buffer associated with the connection.
-func (*IPConn) SetWriteDeadline
 
+* **func (\*IPConn) SetWriteDeadline**
+```golang
 func (c *IPConn) SetWriteDeadline(t time.Time) error
-
+```
 SetWriteDeadline implements the Conn SetWriteDeadline method.
-func (*IPConn) Write
 
+* **func (\*IPConn) Write**
+```golang
 func (c *IPConn) Write(b []byte) (int, error)
-
+```
 Write implements the Conn Write method.
-func (*IPConn) WriteMsgIP
 
+* **func (\*IPConn) WriteMsgIP**
+```golang
 func (c *IPConn) WriteMsgIP(b, oob []byte, addr *IPAddr) (n, oobn int, err error)
-
+```
 WriteMsgIP writes a packet to addr via c, copying the payload from b and the associated out-of-band data from oob. It returns the number of payload and out-of-band bytes written.
-func (*IPConn) WriteTo
 
+* **func (\*IPConn) WriteTo**
+```golang
 func (c *IPConn) WriteTo(b []byte, addr Addr) (int, error)
-
+```
 WriteTo implements the PacketConn WriteTo method.
-func (*IPConn) WriteToIP
 
+* **func (\*IPConn) WriteToIP**
+
+```golang
 func (c *IPConn) WriteToIP(b []byte, addr *IPAddr) (int, error)
-
+```
 WriteToIP writes an IP packet to addr via c, copying the payload from b.
 
 WriteToIP can be made to time out and return an error with Timeout() == true after a fixed time limit; see SetDeadline and SetWriteDeadline. On packet-oriented connections, write timeouts are rare.
-type IPMask
+
+### type IPMask
 
 An IP mask is an IP address.
-
+```golang
 type IPMask []byte
+```
 
-func CIDRMask
+* **func CIDRMask**
 
+```golang
 func CIDRMask(ones, bits int) IPMask
-
+```
 CIDRMask returns an IPMask consisting of `ones' 1 bits followed by 0s up to a total length of `bits' bits. For a mask of this form, CIDRMask is the inverse of IPMask.Size.
 
 ▹ Example
-func IPv4Mask
 
+* **func IPv4Mask**
+```golang
 func IPv4Mask(a, b, c, d byte) IPMask
-
+```
 IPv4Mask returns the IP mask (in 4-byte form) of the IPv4 mask a.b.c.d.
-func (IPMask) Size
 
+* **func (IPMask) Size**
+```golang
 func (m IPMask) Size() (ones, bits int)
-
+```
 Size returns the number of leading ones and total bits in the mask. If the mask is not in the canonical form--ones followed by zeros--then Size returns 0, 0.
-func (IPMask) String
 
+* **func (IPMask) String**
+
+```golang
 func (m IPMask) String() string
+```
 
 String returns the hexadecimal form of m, with no punctuation.
-type IPNet
+### type IPNet
 
 An IPNet represents an IP network.
-
+```golang
 type IPNet struct {
         IP   IP     // network number
         Mask IPMask // network mask
 }
+```
 
-func (*IPNet) Contains
-
+* **func (\*IPNet) Contains**
+```golang
 func (n *IPNet) Contains(ip IP) bool
-
+```
 Contains reports whether the network includes ip.
-func (*IPNet) Network
 
+* **func (\*IPNet) Network**
+```golang
 func (n *IPNet) Network() string
-
+```
 Network returns the address's network name, "ip+net".
-func (*IPNet) String
 
+* **func (\*IPNet) String**
+```golang
 func (n *IPNet) String() string
-
+```
 String returns the CIDR notation of n like "192.0.2.1/24" or "2001:db8::/48" as defined in RFC 4632 and RFC 4291. If the mask is not in the canonical form, it returns the string which consists of an IP address, followed by a slash character and a mask expressed as hexadecimal form with no punctuation like "198.51.100.1/c000ff00".
-type Interface
+### type Interface
 
 Interface represents a mapping between network interface name and index. It also represents network interface facility information.
-
+```golang
 type Interface struct {
         Index        int          // positive integer that starts at one, zero is never used
         MTU          int          // maximum transmission unit
@@ -1039,30 +981,32 @@ type Interface struct {
         HardwareAddr HardwareAddr // IEEE MAC-48, EUI-48 and EUI-64 form
         Flags        Flags        // e.g., FlagUp, FlagLoopback, FlagMulticast
 }
-
-func InterfaceByIndex
-
+```
+* **func InterfaceByIndex**
+```golang
 func InterfaceByIndex(index int) (*Interface, error)
-
+```
 InterfaceByIndex returns the interface specified by index.
 
 On Solaris, it returns one of the logical network interfaces sharing the logical data link; for more precision use InterfaceByName.
-func InterfaceByName
-
+* **func InterfaceByName**
+```golang
 func InterfaceByName(name string) (*Interface, error)
-
+```
 InterfaceByName returns the interface specified by name.
-func (*Interface) Addrs
 
+* **func (\*Interface) Addrs**
+```golang
 func (ifi *Interface) Addrs() ([]Addr, error)
-
+```
 Addrs returns a list of unicast interface addresses for a specific interface.
-func (*Interface) MulticastAddrs
 
+* **func (\*Interface) MulticastAddrs**
+```golang
 func (ifi *Interface) MulticastAddrs() ([]Addr, error)
-
+```
 MulticastAddrs returns a list of multicast, joined group addresses for a specific interface.
-type InvalidAddrError
+### type InvalidAddrError
 
 type InvalidAddrError string
 
