@@ -1,133 +1,24 @@
 
- Package reflect
-
+ # Το πακέτο reflect
+```golang
     import "reflect"
+```
 
-    Overview
-    Index
-    Examples
+Περιεχόμενα:
+* [Γενικά](#info)
+* [Συναρτήσεις - Μέθοδοι](#funcs)
+* [Παραδείγματα](#examples)
 
-Overview ▾
 
-Package reflect implements run-time reflection, allowing a program to manipulate objects with arbitrary types. The typical use is to take a value with static type interface{} and extract its dynamic type information by calling TypeOf, which returns a Type.
+### <a name="info"></a>Γενικά
+
+Το πακέτο reflect υλοποιεί αντανάκλαση χρόνου εκτέλεσης, επιτρέποντας σε ένα πρόγραμμα να χειρίζεται αντικείμενα με αυθαίρετους τύπους. The typical use is to take a value with static type interface{} and extract its dynamic type information by calling TypeOf, which returns a Type.
 
 A call to ValueOf returns a Value representing the run-time data. Zero takes a Type and returns a Value representing a zero value for that type.
 
 See "The Laws of Reflection" for an introduction to reflection in Go: https://golang.org/doc/articles/laws_of_reflection.html
-Index ▾
 
-    func Copy(dst, src Value) int
-    func DeepEqual(x, y interface{}) bool
-    func Select(cases []SelectCase) (chosen int, recv Value, recvOK bool)
-    func Swapper(slice interface{}) func(i, j int)
-    type ChanDir
-        func (d ChanDir) String() string
-    type Kind
-        func (k Kind) String() string
-    type Method
-    type SelectCase
-    type SelectDir
-    type SliceHeader
-    type StringHeader
-    type StructField
-    type StructTag
-        func (tag StructTag) Get(key string) string
-        func (tag StructTag) Lookup(key string) (value string, ok bool)
-    type Type
-        func ArrayOf(count int, elem Type) Type
-        func ChanOf(dir ChanDir, t Type) Type
-        func FuncOf(in, out []Type, variadic bool) Type
-        func MapOf(key, elem Type) Type
-        func PtrTo(t Type) Type
-        func SliceOf(t Type) Type
-        func StructOf(fields []StructField) Type
-        func TypeOf(i interface{}) Type
-    type Value
-        func Append(s Value, x ...Value) Value
-        func AppendSlice(s, t Value) Value
-        func Indirect(v Value) Value
-        func MakeChan(typ Type, buffer int) Value
-        func MakeFunc(typ Type, fn func(args []Value) (results []Value)) Value
-        func MakeMap(typ Type) Value
-        func MakeSlice(typ Type, len, cap int) Value
-        func New(typ Type) Value
-        func NewAt(typ Type, p unsafe.Pointer) Value
-        func ValueOf(i interface{}) Value
-        func Zero(typ Type) Value
-        func (v Value) Addr() Value
-        func (v Value) Bool() bool
-        func (v Value) Bytes() []byte
-        func (v Value) Call(in []Value) []Value
-        func (v Value) CallSlice(in []Value) []Value
-        func (v Value) CanAddr() bool
-        func (v Value) CanInterface() bool
-        func (v Value) CanSet() bool
-        func (v Value) Cap() int
-        func (v Value) Close()
-        func (v Value) Complex() complex128
-        func (v Value) Convert(t Type) Value
-        func (v Value) Elem() Value
-        func (v Value) Field(i int) Value
-        func (v Value) FieldByIndex(index []int) Value
-        func (v Value) FieldByName(name string) Value
-        func (v Value) FieldByNameFunc(match func(string) bool) Value
-        func (v Value) Float() float64
-        func (v Value) Index(i int) Value
-        func (v Value) Int() int64
-        func (v Value) Interface() (i interface{})
-        func (v Value) InterfaceData() [2]uintptr
-        func (v Value) IsNil() bool
-        func (v Value) IsValid() bool
-        func (v Value) Kind() Kind
-        func (v Value) Len() int
-        func (v Value) MapIndex(key Value) Value
-        func (v Value) MapKeys() []Value
-        func (v Value) Method(i int) Value
-        func (v Value) MethodByName(name string) Value
-        func (v Value) NumField() int
-        func (v Value) NumMethod() int
-        func (v Value) OverflowComplex(x complex128) bool
-        func (v Value) OverflowFloat(x float64) bool
-        func (v Value) OverflowInt(x int64) bool
-        func (v Value) OverflowUint(x uint64) bool
-        func (v Value) Pointer() uintptr
-        func (v Value) Recv() (x Value, ok bool)
-        func (v Value) Send(x Value)
-        func (v Value) Set(x Value)
-        func (v Value) SetBool(x bool)
-        func (v Value) SetBytes(x []byte)
-        func (v Value) SetCap(n int)
-        func (v Value) SetComplex(x complex128)
-        func (v Value) SetFloat(x float64)
-        func (v Value) SetInt(x int64)
-        func (v Value) SetLen(n int)
-        func (v Value) SetMapIndex(key, val Value)
-        func (v Value) SetPointer(x unsafe.Pointer)
-        func (v Value) SetString(x string)
-        func (v Value) SetUint(x uint64)
-        func (v Value) Slice(i, j int) Value
-        func (v Value) Slice3(i, j, k int) Value
-        func (v Value) String() string
-        func (v Value) TryRecv() (x Value, ok bool)
-        func (v Value) TrySend(x Value) bool
-        func (v Value) Type() Type
-        func (v Value) Uint() uint64
-        func (v Value) UnsafeAddr() uintptr
-    type ValueError
-        func (e *ValueError) Error() string
-    Bugs
-
-Examples
-
-    MakeFunc
-    StructOf
-    StructTag
-    StructTag.Lookup
-    TypeOf
-
-Package files
-
-deepequal.go makefunc.go swapper.go type.go value.go
+### <a name="funcs"></a>Συναρτήσεις - Μέθοδοι
 func Copy
 
 func Copy(dst, src Value) int
